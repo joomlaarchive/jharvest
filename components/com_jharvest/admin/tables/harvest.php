@@ -18,6 +18,8 @@ class JHarvestTableHarvest extends JTable
     public function __construct(&$db)
     {
         parent::__construct('#__jharvest_harvests', 'id', $db);
+
+        $this->setColumnAlias('published', 'state');
     }
 
     /**

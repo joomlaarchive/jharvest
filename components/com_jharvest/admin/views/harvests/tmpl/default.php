@@ -8,7 +8,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $app        = JFactory::getApplication();
 $user       = JFactory::getUser();
 $userId     = $user->get('id');
-$trashed    = $this->state->get('filter.published') == -2 ? true : false;
+$trashed    = $this->state->get('filter.state') == -2 ? true : false;
 ?>
 <form
     action="<?php echo JRoute::_('index.php?option=com_jharvest&view=harvests'); ?>"

@@ -91,10 +91,12 @@ class JHarvestViewHarvests extends JViewLegacy
 
         JToolbarHelper::help('JHELP_JHARVEST_HARVESTS_MANAGER');
 
+        JHtmlSidebar::setAction('index.php?option=com_jharvest&view=harvests');
+
         JHtmlSidebar::addFilter(
             JText::_('JOPTION_SELECT_PUBLISHED'),
             'filter_state',
-            JHtml::_('select.options', JHarvestHelper::publishedOptions(), 'value', 'text', $this->state->get('filter.state'), true)
+            JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
         );
     }
 }

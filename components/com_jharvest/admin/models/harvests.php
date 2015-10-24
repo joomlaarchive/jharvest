@@ -28,6 +28,16 @@ class JHarvestModelHarvests extends JModelList
         parent::__construct($config);
     }
 
+    protected function populateState($ordering = null, $direction = null)
+    {
+        $published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+        $this->setState('filter.state', $published);
+
+        // Load the parameters.
+        $params = JComponentHelper::getParams('com_jharvest');
+        $this->setState('params', $params);
+    }
+
     public function getItems()
     {
         $items = parent::getItems();
