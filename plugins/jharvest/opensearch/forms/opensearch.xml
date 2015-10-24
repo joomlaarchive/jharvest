@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="params">
+        <field 
+            name="frequency" 
+            type="list"
+            label="PLG_JSPACE_HARVEST_FREQUENCY_LABEL"
+            description="PLG_JSPACE_HARVEST_FREQUENCY_DESC"
+            default="1">
+            <option value="1">PLG_JSPACE_HARVEST_FREQUENCY_OPTION_ONCE</option>
+        </field>
+    </fieldset>
+    
+    <fields name="params">
+        <fields name="discovery">
+            <fields name="plugin">
+                <fieldset name="discovery">
+                    <field 
+                        name="type"
+                        label="PLG_JSPACE_OPENSEARCH_DISCOVERY_PLUGIN_TYPE_LABEL"
+                        description="PLG_JSPACE_OPENSEARCH_DISCOVERY_PLUGIN_TYPE_DESC"
+                        readonly="true"/>
+                </fieldset>
+            </fields>
+        </fields>
+    </fields>
+</form>

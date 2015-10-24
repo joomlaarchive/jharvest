@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="3.2" type="plugin" group="jspace" method="upgrade">
+	<name>plg_jspace_opensearch</name>
+	<author>KnowledgeArc</author>
+	<creationDate>2014/08/16</creationDate>
+	<copyright>Copyright (C) 2014 KnowledgeArc Ltd. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>development@knowledgearc.com</authorEmail>
+	<authorUrl>www.knowledgearc.org</authorUrl>
+	<version>0.1.0</version>
+	<description>PLG_JSPACE_OPENSEARCH_XML_DESCRIPTION</description>
+    
+	<files>
+		<filename plugin="opensearch">opensearch.php</filename>
+	</files>
+    
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_jspace_opensearch.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_jspace_opensearch.sys.ini</language>
+	</languages>
+	<config>
+	</config>
+</extension>

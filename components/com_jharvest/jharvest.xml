@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="component" version="3.4" method="upgrade">
+    <name>com_jharvest</name>
+    <creationDate>2015-09-23</creationDate>
+    <author>KnowledgeArc Ltd</author>
+    <authorEmail>development@knowledgearc.com</authorEmail>
+    <authorUrl>http://www.knowledgearc.org</authorUrl>
+    <copyright>>Copyright (C) 2015 KnowledgeArc Ltd. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html</license>
+    <version>1.0.0-dev</version>
+    <description>COM_JHARVEST_XML_DESCRIPTION</description>
+
+    <scriptfile>script.php</scriptfile>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+    <files folder="site">
+        <filename>jharvest.php</filename>
+        <filename>router.php</filename>
+    </files>
+
+    <languages folder="site">
+        <language tag="en-GB">language/en-GB/en-GB.com_jharvest.ini</language>
+    </languages>
+
+    <administration>
+        <menu img="class:jharvest">JHarvest</menu>
+
+        <files folder="admin">
+            <folder>cli</folder>
+            <folder>controllers</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>jharvest.php</filename>
+        </files>
+
+        <languages folder="admin">
+            <language tag="en-GB">language/en-GB/en-GB.com_jharvest.ini</language>
+            <language tag="en-GB">language/en-GB/en-GB.com_jharvest.sys.ini</language>
+        </languages>
+    </administration>
+
+    <params>
+    </params>
+</extension>
