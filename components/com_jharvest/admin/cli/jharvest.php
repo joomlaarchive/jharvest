@@ -145,7 +145,7 @@ class JHarvestCli extends JApplicationCli
                 $table->harvested = $now->toSql();
                 $table->runs++;
 
-                if ($table->runs >= $table->frequency) {
+                if ((bool)$table->run_once === true) {
                     $table->state = 2;
                 }
 

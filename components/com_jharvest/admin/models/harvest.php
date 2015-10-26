@@ -96,6 +96,10 @@ class JHarvestModelHarvest extends JModelAdmin
 
             $form->removeField('originating_url');
             $form->removeField('harvester');
+
+            // hide the run_once value (users cannot set it after discovery)
+            $form->setFieldAttribute("run_once", 'type', 'hidden');
+            $form->setFieldAttribute("run_once", 'class', '');
         } else {
             $form->removeField('state');
         }

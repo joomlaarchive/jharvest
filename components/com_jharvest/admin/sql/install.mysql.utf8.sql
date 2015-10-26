@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `#__jharvest_harvests` (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
-    `frequency` INTEGER NOT NULL DEFAULT 0 COMMENT 'The number of times the harvester should run.',
+    `run_once` TINYINT NOT NULL DEFAULT 0 COMMENT 'Allows the harvester to only be run once.',
     `runs` INTEGER NOT NULL DEFAULT 0 COMMENT 'The number of times the harvester has run.',
     `harvested` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     `params` TEXT NOT NULL,

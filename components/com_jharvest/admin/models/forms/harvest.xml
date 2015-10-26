@@ -24,6 +24,18 @@
         </field>
 
         <field
+            name="run_once"
+            type="list"
+            label="COM_JHARVEST_HARVEST_RUN_ONCE_LABEL"
+            description="COM_JHARVEST_HARVEST_RUN_ONCE_DESC"
+            class="chzn-color-state"
+            filter="intval"
+            default="0">
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+
+        <field
             name="state"
             type="list"
             label="JSTATUS"

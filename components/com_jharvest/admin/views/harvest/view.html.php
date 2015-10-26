@@ -75,8 +75,6 @@ class JHarvestViewHarvest extends JViewLegacy
                         if ($canDo->get('core.create')) {
                             JToolbarHelper::save2new('harvest.save2new');
                         }
-
-                        JToolbarHelper::custom('harvest.discover', 'refresh', '', 'COM_JHARVEST_HARVEST_BUTTON_REDISCOVER', false);
                     } else {
                         JToolbarHelper::apply('harvest.discover', 'COM_JHARVEST_HARVEST_BUTTON_DISCOVER');
                     }
