@@ -15,10 +15,6 @@ JLoader::import('joomla.filesystem.folder');
  */
 class PlgJHarvestDSpace extends JPlugin
 {
-    const METADATA  = 0;
-    const LINKS     = 1;
-    const ASSETS    = 2;
-
     /**
      * Gets the cached records belonging to this harvest.
      *
@@ -52,6 +48,8 @@ class PlgJHarvestDSpace extends JPlugin
 
     public function onJHarvestIngest($harvest)
     {
+        $params = new JRegistry($harvest->params);
+
         $this->harvestId = $harvest->id;
 
         $items = $this->getCache(0);
@@ -75,23 +73,27 @@ class PlgJHarvestDSpace extends JPlugin
                     $metadata->{"dc.description"} = array("description");
                 }
 
-                $path = $this->buildPackage($item->id, 1, $metadata, $assets);
+                $collection = $params->get('ingest.dspace.collection');
+
+                $path = $this->buildPackage($item->id, $collection, $metadata, $assets);
 
                 $http = JHttpFactory::getHttp(null, 'curl');
 
                 $headers = array(
-                    'user'=>"ffi@knowledgearc.net",
-                    'pass'=>"ffi123",
+                    'user'=>$this->params->get('username'),
+                    'pass'=>$this->params->get('password'),
                     'Content-Type'=>'multipart/form-data');
 
                 $post = array(
                     'upload'=>
                         curl_file_create($path, 'application/zip', JFile::getName($path)));
 
-                $url = new JUri('http://archive.demo.knowledgearc.net/rest/items.stream');
+                $url = new JUri($this->params->get('rest_url').'/items.stream');
                 $response = $http->post($url, $post, $headers);
 
-                JFile::delete($path);
+                if ($response->code == '201') {
+                    JFile::delete($path);
+                }
             }
 
             $items = $this->getCache($i);

@@ -91,8 +91,13 @@ class JHarvestModelHarvest extends JModelAdmin
             $language = JFactory::getLanguage();
             $language->load('plg_jharvest_'.$plugin);
 
-            $path = JPATH_ROOT.'/plugins/jharvest/'.$plugin.'/forms/'.$plugin.'.xml';
+            $path = JPATH_ROOT.'/plugins/jharvest/'.$plugin.'/forms/harvest.xml';
             $form->loadFile($path, false);
+
+            foreach (JPluginHelper::getPlugin('jharvest') as $plugin) {
+                $path = JPATH_ROOT.'/plugins/jharvest/'.$plugin->name.'/forms/ingest.xml';
+                $form->loadFile($path, false);
+            }
 
             $form->removeField('originating_url');
             $form->removeField('harvester');

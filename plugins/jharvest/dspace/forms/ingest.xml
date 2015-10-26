@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="params">
+        <fields name="ingest">
+            <fields name="dspace">
+                <fieldset name="ingest">
+                    <field
+                        name="collection"
+                        type="text"
+                        label="PLG_JHARVEST_DSPACE_COLLECTION_LABEL"
+                        description="PLG_JHARVEST_DSPACE_COLLECTION_DESC"/>
+                </fieldset>
+            </fields>
+        </fields>
+    </fields>
+</form>

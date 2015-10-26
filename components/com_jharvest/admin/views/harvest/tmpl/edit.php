@@ -70,6 +70,16 @@ JText::_('COM_JHARVEST_HARVEST_FIELDSET_PUBLISHING_LABEL', true)); ?>
             </div>
             <?php echo JHtml::_('bootstrap.endTab'); ?>
 
+            <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'ingestion',
+JText::_('COM_JHARVEST_HARVEST_FIELDSET_INGESTION_LABEL', true)); ?>
+            <div class="row-fluid">
+                <div class="span12">
+                    <?php foreach ($this->form->getFieldset('ingest') as $field) : ?>
+                        <?php echo $field->renderField(); ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php echo JHtml::_('bootstrap.endTab'); ?>
             <?php endif; ?>
 
         <?php echo JHtml::_('bootstrap.endTabSet'); ?>
