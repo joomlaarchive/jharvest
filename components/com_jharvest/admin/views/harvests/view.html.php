@@ -82,6 +82,13 @@ class JHarvestViewHarvests extends JViewLegacy
             JToolbarHelper::deleteList('', 'harvests.delete', 'JTOOLBAR_EMPTY_TRASH');
         }
         elseif ($canDo->get('core.edit.state')) {
+            JToolbarHelper::custom(
+                'harvests.reset',
+                'refresh',
+                'refresh',
+                'COM_JHARVEST_HARVESTS_BUTTON_RESET',
+                false);
+
             JToolbarHelper::trash('harvests.trash');
         }
 

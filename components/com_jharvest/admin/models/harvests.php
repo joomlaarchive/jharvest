@@ -89,19 +89,13 @@ class JHarvestModelHarvests extends JModelList
         // Filter by search in title.
         $search = $this->getState('filter.search');
 
-        if (!empty($search))
-        {
-            if (stripos($search, 'id:') === 0)
-            {
+        if (!empty($search)) {
+            if (stripos($search, 'id:') === 0) {
                 $query->where('h.id = ' . (int) substr($search, 3));
-            }
-            elseif (stripos($search, 'author:') === 0)
-            {
+            } elseif (stripos($search, 'author:') === 0) {
                 $search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
                 $query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
-            }
-            else
-            {
+            } else {
                 $search = $db->quote('%' . $db->escape($search, true) . '%');
                 $query->where('(h.originating_url LIKE ' . $search . ' OR h.params LIKE ' . $search . ')');
             }
@@ -110,15 +104,47 @@ class JHarvestModelHarvests extends JModelList
         // Filter by published state
         $state = $this->getState('filter.state');
 
-        if (is_numeric($state))
-        {
+        if (is_numeric($state)) {
             $query->where('h.state = ' . (int)$state);
-        }
-        elseif ($state === '')
-        {
+        } elseif ($state === '') {
             $query->where('(h.state=0 OR h.state=1)');
         }
 
         return $query;
+    }
+
+    /**
+     * Resets the harvest date.
+     *
+     * @param   array  $pks  An array of ids.
+     *
+     * @return  mixed  The number of items reset or false if the reset item
+     * does not exist.
+     */
+    public function reset($pks = array())
+    {
+        $pks = (array)$pks;
+        $table = $this->getTable('Harvest', 'JHarvestTable');
+        $count = 0;
+
+        if (empty($pks)) {
+            $pks = array((int) $this->getState($this->getName() . '.id'));
+        }
+
+        // Check in all items.
+        foreach ($pks as $pk) {
+            if ($table->load($pk)) {
+                $table->harvested = '0000-00-00 00:00:00';
+                $table->store();
+
+                $count++;
+            } else {
+                $this->setError($table->getError());
+
+                return false;
+            }
+        }
+
+        return $count;
     }
 }

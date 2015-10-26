@@ -67,7 +67,9 @@ class JHarvestViewHarvest extends JViewLegacy
             JToolbarHelper::cancel('harvest.cancel');
         } else {
             if (!$checkedOut) {
-                if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)) {
+                if ($canDo->get('core.edit') ||
+                    ($canDo->get('core.edit.own') &&
+                    $this->item->created_by == $userId)) {
                     if ($discovered) {
                         JToolbarHelper::apply('harvest.apply');
                         JToolbarHelper::save('harvest.save');
