@@ -40,7 +40,7 @@
     </languages>
 
     <administration>
-        <menu img="class:jharvest">JHarvest</menu>
+        <menu img="class:jharvest">com_jharvest</menu>
 
         <files folder="admin">
             <folder>cli</folder>

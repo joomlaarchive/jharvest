@@ -9,8 +9,8 @@
                 <fieldset name="discovery">
                     <field
                         name="type"
-                        label="PLG_JSPACE_OPENSEARCH_DISCOVERY_PLUGIN_TYPE_LABEL"
-                        description="PLG_JSPACE_OPENSEARCH_DISCOVERY_PLUGIN_TYPE_DESC"
+                        label="PLG_HARVEST_OPENSEARCH_DISCOVERY_PLUGIN_TYPE_LABEL"
+                        description="PLG_HARVEST_OPENSEARCH_DISCOVERY_PLUGIN_TYPE_DESC"
                         readonly="true"/>
                 </fieldset>
             </fields>

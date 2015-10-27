@@ -1,8 +1,5 @@
 <?php
 /**
- * @package     JSpace.Plugin
- * @subpackage  JSpace
- *
  * @copyright   Copyright (C) 2014 KnowledgeArc Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
@@ -19,10 +16,9 @@ use \SimpleXMLElement;
 /**
  * Handles importing items via an OpenSearch compliant search engine.
  *
- * @package     JSpace.Plugin
- * @subpackage  JSpace
+ * @package     JHarvest.Plugin
  */
-class PlgJSpaceOpenSearch extends JPlugin
+class PlgHarvestOpenSearch extends JPlugin
 {
     /**
      * Attempts to discover whether the harvest configuration points to an OpenSearch-enabled url.
@@ -32,7 +28,7 @@ class PlgJSpaceOpenSearch extends JPlugin
      * @return  JRegistry  A OpenSearch description as a JRegistry or false if no description
      * can be found.
      */
-    public function onJSpaceHarvestDiscover($sourceUrl)
+    public function onJHarvestDiscover($sourceUrl)
     {
         return $this->discover($sourceUrl);
     }
@@ -127,7 +123,7 @@ class PlgJSpaceOpenSearch extends JPlugin
     }
 
     /**
-     * Captures the onJSpaceHarvestRetrieve event, retrieving records via the configured
+     * Captures the onJHarvestRetrieve event, retrieving records via the configured
      * OpenSearch results.
      *
      * @param  JObject  $harvest  The harvest information.
@@ -226,12 +222,6 @@ class PlgJSpaceOpenSearch extends JPlugin
             }
 
             $cache = array("metadata"=>$metadata);
-
-            $table = JTable::getInstance('Cache', 'JSpaceTable');
-            $table->set('id', $identifier);
-            $table->set('data', json_encode($cache));
-            $table->set('harvest_id', (int)$harvest->id);
-            $table->store();
         }
     }
 }

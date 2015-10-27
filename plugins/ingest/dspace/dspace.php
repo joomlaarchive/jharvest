@@ -13,7 +13,7 @@ JLoader::import('joomla.filesystem.folder');
  *
  * @package     JHarvest.Plugin
  */
-class PlgJHarvestDSpace extends JPlugin
+class PlgIngestDSpace extends JPlugin
 {
     /**
      * Gets the cached records belonging to this harvest.

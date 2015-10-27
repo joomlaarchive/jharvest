@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
  *
  * @package     JHarvest.Plugin
  */
-class PlgJHarvestOai extends JPlugin
+class PlgHarvestOai extends JPlugin
 {
     const FOLLOW_ON = 0;
 

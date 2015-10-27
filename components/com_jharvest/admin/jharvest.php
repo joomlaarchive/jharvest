@@ -9,7 +9,7 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tabstate');
 
-if (!JFactory::getUser()->authorise('core.manage', 'com_jspace'))
+if (!JFactory::getUser()->authorise('core.manage', 'com_jharvest'))
 {
     throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 404);
 }

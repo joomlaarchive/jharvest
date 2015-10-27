@@ -5,20 +5,20 @@
             <field
                 name="set"
                 type="text"
-                label="PLG_JSPACE_OAI_SETS_LABEL"
-                description="PLG_JSPACE_OAI_SETS_DESC"/>
+                label="PLG_HARVEST_OAI_SETS_LABEL"
+                description="PLG_HARVEST_OAI_SETS_DESC"/>
 
             <field
                 name="harvest_type"
                 type="list"
-                label="PLG_JSPACE_OAI_HARVESTTYPE_LABEL"
-                description="PLG_JSPACE_OAI_HARVESTTYPE_DESC"
+                label="PLG_HARVEST_OAI_HARVESTTYPE_LABEL"
+                description="PLG_HARVEST_OAI_HARVESTTYPE_DESC"
                 filter="intval"
                 size="1"
                 default="2">
-                <option value="0">PLG_JSPACE_OAI_HARVESTTYPE_OPTION_METADATA</option>
-                <option value="1">PLG_JSPACE_OAI_HARVESTTYPE_OPTION_LINKS</option>
-                <option value="2">PLG_JSPACE_OAI_HARVESTTYPE_OPTION_ASSETS</option>
+                <option value="0">PLG_HARVEST_OAI_HARVESTTYPE_OPTION_METADATA</option>
+                <option value="1">PLG_HARVEST_OAI_HARVESTTYPE_OPTION_LINKS</option>
+                <option value="2">PLG_HARVEST_OAI_HARVESTTYPE_OPTION_ASSETS</option>
             </field>
         </fieldset>
 
@@ -27,13 +27,13 @@
                 <fieldset name="details">
                     <field
                         name="metadata"
-                        label="PLG_JSPACE_OAI_DISCOVERY_METADATA_LABEL"
-                        description="PLG_JSPACE_OAI_DISCOVERY_METADATA_DESC"
+                        label="PLG_HARVEST_OAI_DISCOVERY_METADATA_LABEL"
+                        description="PLG_HARVEST_OAI_DISCOVERY_METADATA_DESC"
                         readonly="true"/>
                     <field
                         name="assets"
-                        label="PLG_JSPACE_OAI_DISCOVERY_ASSETS_LABEL"
-                        description="PLG_JSPACE_OAI_DISCOVERY_ASSETS_DESC"
+                        label="PLG_HARVEST_OAI_DISCOVERY_ASSETS_LABEL"
+                        description="PLG_HARVEST_OAI_DISCOVERY_ASSETS_DESC"
                         readonly="true"/>
                 </fieldset>
             </fields>

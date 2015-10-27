@@ -130,7 +130,9 @@ class JHarvestCli extends JApplicationCli
         $this->out('started '.(string)$start);
 
         $dispatcher = JEventDispatcher::getInstance();
-        JPluginHelper::importPlugin('jharvest');
+
+        JPluginHelper::importPlugin('harvest');
+        JPluginHelper::importPlugin('ingest');
 
         foreach ($harvests->getItems() as $harvest) {
             try {

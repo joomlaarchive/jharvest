@@ -7,8 +7,8 @@
                     <field
                         name="collection"
                         type="text"
-                        label="PLG_JHARVEST_DSPACE_COLLECTION_LABEL"
-                        description="PLG_JHARVEST_DSPACE_COLLECTION_DESC"/>
+                        label="PLG_INGEST_DSPACE_COLLECTION_LABEL"
+                        description="PLG_INGEST_DSPACE_COLLECTION_DESC"/>
                 </fieldset>
             </fields>
         </fields>

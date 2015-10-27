@@ -112,39 +112,4 @@ class JHarvestModelHarvests extends JModelList
 
         return $query;
     }
-
-    /**
-     * Resets the harvest date.
-     *
-     * @param   array  $pks  An array of ids.
-     *
-     * @return  mixed  The number of items reset or false if the reset item
-     * does not exist.
-     */
-    public function reset($pks = array())
-    {
-        $pks = (array)$pks;
-        $table = $this->getTable('Harvest', 'JHarvestTable');
-        $count = 0;
-
-        if (empty($pks)) {
-            $pks = array((int) $this->getState($this->getName() . '.id'));
-        }
-
-        // Check in all items.
-        foreach ($pks as $pk) {
-            if ($table->load($pk)) {
-                $table->harvested = '0000-00-00 00:00:00';
-                $table->store();
-
-                $count++;
-            } else {
-                $this->setError($table->getError());
-
-                return false;
-            }
-        }
-
-        return $count;
-    }
 }

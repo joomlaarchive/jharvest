@@ -89,13 +89,14 @@ class JHarvestModelHarvest extends JModelAdmin
             $plugin = $params->get('discovery.type');
 
             $language = JFactory::getLanguage();
-            $language->load('plg_jharvest_'.$plugin);
+            $language->load('plg_harvest_'.$plugin);
 
-            $path = JPATH_ROOT.'/plugins/jharvest/'.$plugin.'/forms/harvest.xml';
+            $path = JPATH_ROOT.'/plugins/harvest/'.$plugin.'/forms/harvest.xml';
             $form->loadFile($path, false);
 
-            foreach (JPluginHelper::getPlugin('jharvest') as $plugin) {
-                $path = JPATH_ROOT.'/plugins/jharvest/'.$plugin->name.'/forms/ingest.xml';
+            foreach (JPluginHelper::getPlugin('ingest') as $plugin) {
+                $language->load('plg_ingest_'.$plugin->name);
+                $path = JPATH_ROOT.'/plugins/ingest/'.$plugin->name.'/forms/ingest.xml';
                 $form->loadFile($path, false);
             }
 
@@ -172,7 +173,7 @@ class JHarvestModelHarvest extends JModelAdmin
         $url = JArrayHelper::getValue($data, 'originating_url');
 
         $dispatcher = JEventDispatcher::getInstance();
-        JPluginHelper::importPlugin('jharvest');
+        JPluginHelper::importPlugin('harvest');
 
         try {
             $result = $dispatcher->trigger('onJHarvestDiscover', array($url));
@@ -197,5 +198,36 @@ class JHarvestModelHarvest extends JModelAdmin
         }
 
         return false;
+    }
+
+    /**
+     * Resets the harvest date.
+     *
+     * @param   array  $pks  An array of ids.
+     *
+     * @return  mixed  The number of items reset or false if the reset item
+     * does not exist.
+     */
+    public function reset($pks = array())
+    {
+        $pks = (array)$pks;
+        $table = $this->getTable();
+        $count = 0;
+
+        // Check in all items.
+        foreach ($pks as $pk) {
+            if ($table->load($pk)) {
+                $table->harvested = '0000-00-00 00:00:00';
+                $table->store();
+
+                $count++;
+            } else {
+                $this->setError($table->getError());
+
+                return false;
+            }
+        }
+
+        return $count;
     }
 }

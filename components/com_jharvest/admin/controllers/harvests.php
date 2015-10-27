@@ -3,12 +3,9 @@ defined('_JEXEC') or die;
 
 class JHarvestControllerHarvests extends JControllerAdmin
 {
-    public function __construct($config = array())
+    public function getModel($name = 'Harvest', $prefix = 'JHarvestModel', $config = array('ignore_request'=>true))
     {
-        parent::__construct($config);
-
-        $this->set('model_prefix', 'JHarvestModel');
-        $this->set('name', 'Harvests');
+        return parent::getModel($name, $prefix, $config);
     }
 
     public function reset()

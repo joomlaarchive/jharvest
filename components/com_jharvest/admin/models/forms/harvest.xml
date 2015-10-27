@@ -8,17 +8,17 @@
         <field
             name="originating_url"
             type="text"
-            label="COM_JSPACE_HARVEST_URL_LABEL"
-            description="COM_JSPACE_HARVEST_URL_DESC"
+            label="COM_JHARVEST_HARVEST_URL_LABEL"
+            description="COM_JHARVEST_HARVEST_URL_DESC"
             class="input-xlarge"
             required="true"/>
 
         <field
             name="harvester"
             type="plugins"
-            folder="jharvest"
-            label="COM_JSPACE_HARVEST_HARVESTER_LABEL"
-            description="COM_JSPACE_HARVEST_HARVESTER_DESC"
+            folder="harvest"
+            label="COM_JHARVEST_HARVEST_HARVESTER_LABEL"
+            description="COM_JHARVEST_HARVEST_HARVESTER_DESC"
             class="inputbox">
             <option value="">[Auto Discover]</option>
         </field>
@@ -56,8 +56,8 @@
         <field
             name="created"
             type="calendar"
-            label="COM_JSPACE_RECORD_CREATED_LABEL"
-            description="COM_JSPACE_RECORD_CREATED_DESC"
+            label="COM_JHARVEST_HARVEST_CREATED_LABEL"
+            description="COM_JHARVEST_HARVEST_CREATED_DESC"
             class="inputbox"
             size="22"
             readonly="true"
@@ -67,15 +67,15 @@
         <field
             name="created_by"
             type="user"
-            label="COM_JSPACE_HARVEST_CREATED_BY_LABEL"
-            description="COM_JSPACE_HARVEST_CREATED_BY_DESC"/>
+            label="COM_JHARVEST_HARVEST_CREATED_BY_LABEL"
+            description="COM_JHARVEST_HARVEST_CREATED_BY_DESC"/>
 
         <field
             name="modified"
             type="calendar"
             class="readonly"
-            label="JGLOBAL_FIELD_MODIFIED_LABEL"
-            description="COM_JSPACE_RECORD_MODIFIED_DESC"
+            label="COM_JHARVEST_HARVEST_MODIFIED_LABEL"
+            description="COM_JHARVEST_HARVEST_MODIFIED_DESC"
             size="22"
             readonly="true"
             format="%Y-%m-%d %H:%M:%S"
@@ -104,12 +104,12 @@
             <fieldset name="details">
                 <field
                     name="url"
-                    label="COM_JSPACE_HARVEST_DISCOVERY_URL_LABEL"
-                    description="COM_JSPACE_HARVEST_DISCOVERY_URL_DESC"/>
+                    label="COM_JHARVEST_HARVEST_DISCOVERY_URL_LABEL"
+                    description="COM_JHARVEST_HARVEST_DISCOVERY_URL_DESC"/>
                 <field
                     name="type"
-                    label="COM_JSPACE_HARVEST_DISCOVERY_TYPE_LABEL"
-                    description="COM_JSPACE_HARVEST_DISCOVERY_TYPE_DESC"
+                    label="COM_JHARVEST_HARVEST_DISCOVERY_TYPE_LABEL"
+                    description="COM_JHARVEST_HARVEST_DISCOVERY_TYPE_DESC"
                     readonly="true"/>
             </fieldset>
         </fields>
