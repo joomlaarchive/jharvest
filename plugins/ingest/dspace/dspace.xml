@@ -12,6 +12,7 @@
 
     <files>
         <filename plugin="dspace">dspace.php</filename>
+        <folder>forms</folder>
     </files>
 
     <languages>

@@ -175,8 +175,6 @@ class PlgIngestDSpace extends JPlugin
      *
      * @param  string   $src   The url to download from.
      * @param  string   $dest  The location to download to.
-     *
-     * @return  string  The downloaded file path.
      */
     private function download($src, $dest)
     {
