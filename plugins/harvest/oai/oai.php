@@ -110,7 +110,7 @@ class PlgHarvestOai extends JPlugin
     /**
      * Retrieves items from an OAI-enabled url.
      *
-     * @param  JObject  $harvest  The harvesting details.
+     * @param  JTable  $harvest  The harvesting details.
      */
     public function onJHarvestRetrieve($harvest)
     {
@@ -141,17 +141,21 @@ class PlgHarvestOai extends JPlugin
                 $queries['metadataPrefix'] = $metadataPrefix;
 
                 if ($harvest->harvested != JFactory::getDbo()->getNullDate()) {
-                    //$queries['from'] = JFactory::getDate($harvest->harvested)->format('Y-m-d\TH:i:s\Z');
+                    $queries['from'] = JFactory::getDate($harvest->harvested)->format('Y-m-d\TH:i:s\Z');
                 }
 
                 if ($set = $params->get('set')) {
                     $queries['set'] = $set;
                 }
+
+                $queries['until'] = $harvest->now->format('Y-m-d\TH:i:s\Z');
             }
 
             $url = new JUri($params->get('discovery.url'));
             $url->setQuery($queries);
             $url->setVar('verb', 'ListRecords');
+
+            JLog::add('Requesting OAI URL '.(string)$url, JLog::DEBUG, 'jharvest');
 
             $response = $http->get($url);
 
@@ -198,8 +202,6 @@ class PlgHarvestOai extends JPlugin
                         case 'error':
                             if (JArrayHelper::getValue($attributes, 'code', null, 'string') !== "noRecordsMatch") {
                                 throw new Exception((string)$node, 500);
-                            } else {
-                                throw new Exception(JArrayHelper::getValue($attributes, 'code', null, 'string'));
                             }
 
                             break;
@@ -260,7 +262,7 @@ class PlgHarvestOai extends JPlugin
 
                     $cache["assets"] = JArrayHelper::getValue($array, 0, array());
                 } else {
-                    JLog::add('Cannot retrieve asset from OAI url.', JLog::$WARNING, 'jharvest');
+                    JLog::add('Cannot retrieve asset from OAI url.', JLog::ERROR, 'jharvest');
                 }
 
             }
