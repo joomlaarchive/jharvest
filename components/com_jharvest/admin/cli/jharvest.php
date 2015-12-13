@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /**
  * @package JSpace
@@ -70,6 +69,8 @@ use \JLog;
 use \JFactory;
 use \JDate;
 
+JLoader::register('JHarvestHelper', __DIR__.'/../administrator/components/com_jharvest/helpers/jharvest.php');
+
 /**
  * Simple command line interface application class.
  *
@@ -140,11 +141,20 @@ class JHarvestCli extends JApplicationCli
 
                 $table = JTable::getInstance('Harvest', 'JHarvestTable');
                 $table->load($harvest->id);
+                $table->now = $now;
 
                 $dispatcher->trigger('onJHarvestRetrieve', array($table));
                 $dispatcher->trigger('onJHarvestIngest', array($table));
 
-                $table->harvested = $now->toSql();
+                $query = JFactory::getDbo()->getQuery(true);
+                $query->select('count(id)')->from('#__jharvest_cache');
+                $total = (int)JFactory::getDbo()->setQuery($query)->loadResult();
+
+                // only record last successful harvest which had records.
+                if ($total > 0) {
+                    $table->harvested = $now->toSql();
+                }
+
                 $table->runs++;
 
                 if ((bool)$table->run_once === true) {
@@ -152,6 +162,8 @@ class JHarvestCli extends JApplicationCli
                 }
 
                 $table->store();
+
+                JHarvestHelper::clearCache();
             } catch (Exception $e) {
                 echo $e->getMessage();
                 echo $e->getTraceAsString();

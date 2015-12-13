@@ -22,4 +22,10 @@ class JHarvestHelper extends JHelperContent
 
         return $options;
     }
+
+    public static function clearCache()
+    {
+        $db = JFactory::getDbo();
+        $db->truncateTable("#__jharvest_cache");
+    }
 }
