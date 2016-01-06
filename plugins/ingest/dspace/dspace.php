@@ -15,6 +15,15 @@ JLoader::import('joomla.filesystem.folder');
  */
 class PlgIngestDSpace extends JPlugin
 {
+    protected $autoloadLanguage = true;
+
+    public function __construct($subject, $config = array())
+    {
+        parent::__construct($subject, $config);
+
+        \JLog::addLogger(array());
+    }
+
     /**
      * Gets the cached records belonging to this harvest.
      *
@@ -66,11 +75,11 @@ class PlgIngestDSpace extends JPlugin
                 $assets = $data->assets;
 
                 if (!isset($metadata->{"dc.type"})) {
-                    $metadata->{"dc.type"} = array("type");
+                    $metadata->{"dc.type"} = array("-");
                 }
 
                 if (!isset($metadata->{"dc.description"})) {
-                    $metadata->{"dc.description"} = array("description");
+                    $metadata->{"dc.description"} = array("-");
                 }
 
                 $collection = $params->get('ingest.dspace.collection');
@@ -92,8 +101,12 @@ class PlgIngestDSpace extends JPlugin
                 $response = $http->post($url, $post, $headers);
 
                 if ($response->code == '201') {
-                    JFile::delete($path);
+                    JLog::add(print_r($response, true), JLog::DEBUG, 'ingestdspace');
+                } else {
+                    JLog::add(print_r($response, true), JLog::ERROR, 'ingestdspace');
                 }
+
+                JFile::delete($path);
             }
 
             $items = $this->getCache($i);
@@ -143,11 +156,18 @@ class PlgIngestDSpace extends JPlugin
 
         foreach ($assets as $asset) {
             $bitstream = $bitstreams->addChild("bitstream");
-            $bitstream->addChild("name", $asset->name);
+            $bitstream->addChild("name", htmlspecialchars($asset->name));
             $bitstream->addChild("mimeType", $asset->type);
 
-            $src = $asset->url;
+            $url = JUri::getInstance($asset->url);
+            $parts = explode('/', $url->getPath());
+            $url->setPath(join('/', array_map('rawurlencode', $parts)));
+
+            $src = (string)$url;
             $dest = $path.'/'.JFile::makeSafe($asset->name);
+
+            JLog::add("Asset Src: ".$src, JLog::DEBUG, 'ingestdspace');
+            JLog::add("Asset Dst: ".$dest, JLog::DEBUG, 'ingestdspace');
 
             $this->download($src, $dest);
 
