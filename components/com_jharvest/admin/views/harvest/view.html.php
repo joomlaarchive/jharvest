@@ -73,10 +73,6 @@ class JHarvestViewHarvest extends JViewLegacy
                     if ($discovered) {
                         JToolbarHelper::apply('harvest.apply');
                         JToolbarHelper::save('harvest.save');
-
-                        if ($canDo->get('core.create')) {
-                            JToolbarHelper::save2new('harvest.save2new');
-                        }
                     } else {
                         JToolbarHelper::apply('harvest.discover', 'COM_JHARVEST_HARVEST_BUTTON_DISCOVER');
                     }

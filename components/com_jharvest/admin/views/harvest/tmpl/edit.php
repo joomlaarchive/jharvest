@@ -45,15 +45,6 @@ true)); ?>
                     $this->fieldset = 'discovery';
                     echo JLayoutHelper::render('joomla.edit.fieldset', $this);
                     ?>
-
-                    <?php if ($this->item->harvested) : ?>
-                    <div class="control-group">
-                        <div class="control-label">
-                            <label><?php echo JText::_('COM_JHARVEST_HARVEST_HARVESTED_LABEL'); ?></label>
-                        </div>
-                        <div class="controls"><?php echo $this->item->harvested; ?></div>
-                    </div>
-                    <?php endif; ?>
                 </div>
             </div>
             <?php echo JHtml::_('bootstrap.endTab'); ?>

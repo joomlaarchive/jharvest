@@ -108,6 +108,9 @@ class JHarvestModelHarvest extends JModelAdmin
             $form->setFieldAttribute("run_once", 'class', '');
         } else {
             $form->removeField('state');
+            $form->removeField('harvested');
+            $form->removeField('url', 'params.discovery');
+            $form->removeField('type', 'params.discovery');
         }
 
         parent::preprocessForm($form, $data, $group);
@@ -130,20 +133,11 @@ class JHarvestModelHarvest extends JModelAdmin
                 $isNew = false;
             }
 
-            if (!$table->bind($data)) {
+            if (!$table->save($data)) {
                 $this->setError($table->getError());
                 return false;
             }
 
-            if (!$table->check()) {
-                $this->setError($table->getError());
-                return false;
-            }
-
-            if (!$table->store()) {
-                $this->setError($table->getError());
-                return false;
-            }
         } catch (Exception $e) {
             JLog::addLogger(array());
             JLog::add($e->getMessage(), JLog::ERROR, 'jharvest');
@@ -151,7 +145,7 @@ class JHarvestModelHarvest extends JModelAdmin
             return false;
         }
 
-        $this->setState('harvest.id', $harvest->id);
+        $this->setState('harvest.id', $table->id);
 
         $this->setState($this->getName() . '.new', ($pk ? false : true));
 
