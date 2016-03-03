@@ -138,9 +138,8 @@ class PlgIngestDSpace extends JPlugin
 
         $i = 0;
         foreach ($metadata as $key=>$field) {
-            $element = $request->metadata->addChild("field");
-
             foreach ($field as $value) {
+                $element = $request->metadata->addChild("field");
                 $element->name = $key;
                 $element->value = $value;
                 $i++;

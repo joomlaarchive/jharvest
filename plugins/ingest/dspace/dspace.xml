@@ -13,12 +13,32 @@
     <files>
         <filename plugin="dspace">dspace.php</filename>
         <folder>forms</folder>
+        <folder>sql</folder>
     </files>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
 
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.plg_ingest_dspace.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.plg_ingest_dspace.sys.ini</language>
     </languages>
+
     <config>
         <fields name="params">
             <fieldset name="basic">

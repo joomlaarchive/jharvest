@@ -2,7 +2,7 @@
 /**
  * @package JSpace
  * @subpackage CLI
- * @copyright Copyright (C) 2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright Copyright (C) 2014-2016 KnowledgeArc Ltd. All rights reserved.
  */
 
 // Make sure we're being called from the command line, not a web interface
@@ -85,7 +85,7 @@ class JHarvestCli extends JApplicationCli
             return;
         }
 
-        // fool the system into thinking we are running as JSite with JSolr as the active component
+        // fool the system into thinking we are running as JSite with JHarvest as the active component
         $_SERVER['HTTP_HOST'] = 'domain.com';
         JFactory::getApplication('site');
 
@@ -94,16 +94,12 @@ class JHarvestCli extends JApplicationCli
         $config->set('caching', 0);
         $config->set('cache_handler', 'file');
 
-        try {
-            if ($this->input->get('list')) {
-                $this->listHarvests();
-            } else if ($this->input->get('harvest')) {
-                $this->harvest();
-            } else {
-                $this->help();
-            }
-        } catch (Exception $e) {
-            $this->out($e->getMessage());
+        if ($this->input->get('list')) {
+            $this->listHarvests();
+        } else if ($this->input->get('harvest')) {
+            $this->harvest();
+        } else {
+            $this->help();
         }
     }
 
@@ -116,19 +112,22 @@ class JHarvestCli extends JApplicationCli
             $params = new Registry;
             $params->loadString($harvest->params);
 
-            $this->out($harvest->id."\t".$params->get('discovery.url'));
+            fwrite(STDOUT, $harvest->id."\t".$params->get('discovery.url'));
         }
     }
 
     private function harvest()
     {
+        $GLOBALS['application'] = $this;
+
         JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
         JModelLegacy::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/models', 'JHarvestModel');
 
         $harvests = JModelLegacy::getInstance('Harvests', 'JHarvestModel');
 
         $start = new JDate('now');
-        $this->out('started '.(string)$start);
+
+        JHarvestHelper::log("started ".(string)$start);
 
         $dispatcher = JEventDispatcher::getInstance();
 
@@ -162,19 +161,19 @@ class JHarvestCli extends JApplicationCli
                 }
 
                 $table->store();
-
-                JHarvestHelper::clearCache();
             } catch (Exception $e) {
-                echo $e->getMessage();
-                echo $e->getTraceAsString();
-                $this->out($e->getMessage());
+                JHarvestHelper::log($e->getMessage()."\n");
+                JHarvestHelper::log($e->getTraceAsString()."\n");
             }
+
+            // clear the cache, even if there is an error.
+            JHarvestHelper::clearCache();
         }
 
         $end = new JDate('now');
 
-        $this->out('ended '.(string)$end);
-        $this->out($start->diff($end)->format("%H:%I:%S"));
+        JHarvestHelper::log('ended '.(string)$end);
+        JHarvestHelper::log($start->diff($end)->format("%H:%I:%S"));
     }
 
     /**
@@ -183,10 +182,25 @@ class JHarvestCli extends JApplicationCli
      */
     private function help()
     {
+        $version = "1.0";
+
         $out = <<<EOT
-Usage: jspace harvest [task]
+JHarvest CLI $version
+Copyright (C) 2014-2016 KnowledgeArc Ltd
+-------------------------------------------------------------------------------
+JHarvest is Free Software, distributed under the terms of the GNU General
+Public License version 3 or, at your option, any later version.
+This program comes with ABSOLUTELY NO WARRANTY as per sections 15 & 16 of the
+license. See http://www.gnu.org/licenses/gpl-3.0.html for details.
+-------------------------------------------------------------------------------
+
+Usage: jspace harvest [OPTIONS] [task]
 
 Provides harvesting functions from the command line.
+
+[OPTIONS]
+  -v, --verbose              Writes more information.
+  -q, --quiet                Suppresses all output including errors.
 
 [task]
   --list                     Lists all available harvests.

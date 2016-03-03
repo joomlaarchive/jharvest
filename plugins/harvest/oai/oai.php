@@ -155,7 +155,7 @@ class PlgHarvestOai extends JPlugin
             $url->setQuery($queries);
             $url->setVar('verb', 'ListRecords');
 
-            JLog::add('Requesting OAI URL '.(string)$url, JLog::DEBUG, 'jharvest');
+            JHarvestHelper::log('Retrieving '.(string)$url.' for harvest...', JLog::DEBUG);
 
             $response = $http->get($url);
 
@@ -182,7 +182,11 @@ class PlgHarvestOai extends JPlugin
 
                     switch ($reader->name) {
                         case "record":
-                            $this->cache($harvest, $node);
+                            try {
+                                $this->cache($harvest, $node);
+                            } catch (Exception $e) {
+                                JHarvestHelper::log($e->getMessage(), JLog::ERROR);
+                            }
 
                             break;
 
@@ -262,7 +266,7 @@ class PlgHarvestOai extends JPlugin
 
                     $cache["assets"] = JArrayHelper::getValue($array, 0, array());
                 } else {
-                    JLog::add('Cannot retrieve asset from OAI url.', JLog::ERROR, 'jharvest');
+                    throw new Exception ((string)$response, (int)$response->code);
                 }
 
             }
