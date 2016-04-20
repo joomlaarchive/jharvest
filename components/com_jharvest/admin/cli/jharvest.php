@@ -1,8 +1,9 @@
 <?php
 /**
- * @package JSpace
- * @subpackage CLI
- * @copyright Copyright (C) 2014-2016 KnowledgeArc Ltd. All rights reserved.
+ * @package     JSpace
+ * @subpackage  Cli
+ * @copyright   Copyright (C) 2014-2016 KnowledgeArc Ltd. All rights reserved.
+ * @license     This file is part of the JHarvest component for Joomla!.
  */
 
 // Make sure we're being called from the command line, not a web interface
