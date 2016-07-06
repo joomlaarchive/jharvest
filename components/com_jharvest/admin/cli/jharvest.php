@@ -65,10 +65,6 @@ $lang->load('jharvest_cli', JPATH_SITE, null, false, false)
 || $lang->load('jharvest_cli', JPATH_SITE, null, true);
 
 use Joomla\Registry\Registry;
-use \JPlugin;
-use \JLog;
-use \JFactory;
-use \JDate;
 
 JLoader::register('JHarvestHelper', __DIR__.'/../administrator/components/com_jharvest/helpers/jharvest.php');
 

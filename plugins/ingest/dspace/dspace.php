@@ -101,9 +101,9 @@ class PlgIngestDSpace extends JPlugin
                 $response = $http->post($url, $post, $headers);
 
                 if ($response->code == '201') {
-                    JLog::add(print_r($response, true), JLog::DEBUG, 'ingestdspace');
+                    fwrite(STDOUT, "item created: ".(string)$response->body."\n");
                 } else {
-                    JLog::add(print_r($response, true), JLog::ERROR, 'ingestdspace');
+                    fwrite(STDOUT, print_r($response, true)."\n");
                 }
 
                 JFile::delete($path);
@@ -155,25 +155,20 @@ class PlgIngestDSpace extends JPlugin
 
         foreach ($assets as $asset) {
             $bitstream = $bitstreams->addChild("bitstream");
-            $bitstream->addChild("name", htmlspecialchars($asset->name));
+            $bitstream->addChild("name", htmlspecialchars($asset->name, ENT_XML1, 'UTF-8'));
             $bitstream->addChild("mimeType", $asset->type);
 
-            $url = JUri::getInstance($asset->url);
-            $parts = explode('/', $url->getPath());
-            $url->setPath(join('/', array_map('rawurlencode', $parts)));
+            $src = $asset->url;
+            $dest = $path.'/'.$asset->name;
 
-            $src = (string)$url;
-            $dest = $path.'/'.JFile::makeSafe($asset->name);
-
-            JLog::add("Asset Src: ".$src, JLog::DEBUG, 'ingestdspace');
-            JLog::add("Asset Dst: ".$dest, JLog::DEBUG, 'ingestdspace');
+            fwrite(STDOUT, "Fetching ".$src." to ".$dest."\n");
 
             $this->download($src, $dest);
 
             $handle = fopen($dest, "r");
 
             $files[] = array(
-                "name"=>JFile::makeSafe($asset->name),
+                "name"=>$asset->name,
                 "data"=>fread($handle, $asset->size));
 
             fclose($handle);
@@ -197,12 +192,10 @@ class PlgIngestDSpace extends JPlugin
      */
     private function download($src, $dest)
     {
-        if ($shandle = @fopen($src, 'r'))
-        {
+        if ($shandle = @fopen($src, 'r')) {
             $dhandle = fopen($dest, 'w');
 
-            while (!feof($shandle))
-            {
+            while (!feof($shandle)) {
                 $chunk = fread($shandle, 1024);
                 fwrite($dhandle, $chunk);
             }
