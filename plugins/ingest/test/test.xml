@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="3.4" type="plugin" group="ingest" method="upgrade">
+    <name>plg_ingest_test</name>
+    <author>KnowledgeArc</author>
+    <creationDate>2016/07/06</creationDate>
+    <copyright>Copyright (C) 2014-2016 KnowledgeArc Ltd. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>development@knowledgearc.com</authorEmail>
+    <authorUrl>www.knowledgearc.org</authorUrl>
+    <version>1.0.0-alpha</version>
+    <description>PLG_INGEST_TEST_XML_DESCRIPTION</description>
+
+    <files>
+        <filename plugin="test">test.php</filename>
+    </files>
+
+    <install>
+    </install>
+
+    <uninstall>
+    </uninstall>
+
+    <update>
+    </update>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_ingest_test.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_ingest_test.sys.ini</language>
+    </languages>
+
+    <config>
+    </config>
+</extension>
