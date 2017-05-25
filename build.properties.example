@@ -1,2 +1,4 @@
 src=.
 path.joomla=/var/www/html/
+package.version=x.x.x
+package.date=YYYY-MM-DD

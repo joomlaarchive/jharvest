@@ -2,7 +2,7 @@
 /**
  * @package     JSpace
  * @subpackage  Cli
- * @copyright   Copyright (C) 2014-2016 KnowledgeArc Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2014-2017 KnowledgeArc Ltd. All rights reserved.
  * @license     This file is part of the JHarvest component for Joomla!.
  */
 
