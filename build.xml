@@ -245,10 +245,10 @@
 
     <target name="deploy_test_data">
         <delete includeemptydirs="false">
-            <fileset dir="${path.joomla}/../jsolr" includes="**/*"/>
+            <fileset dir="${path.joomla}/../${id}" includes="**/*"/>
         </delete>
 
-        <copy todir="${path.joomla}/../jsolr">
+        <copy todir="${path.joomla}/../${id}">
             <fileset dir="tests/unit/stubs">
                 <include name="**/**"/>
             </fileset>
@@ -273,13 +273,13 @@
             <fileset dir="${package.dest}" includes="${package.extensions}"/>
         </move>
 
-        <zip destfile="${package.dest}/pkg_jsolr.zip">
+        <zip destfile="${package.dest}/pkg_${id}.zip">
             <fileset dir="${package.dest}">
                 <include name="packages/**"/>
             </fileset>
 
             <fileset dir=".">
-                <include name="pkg_jsolr.xml"/>
+                <include name="pkg_${id}.xml"/>
             </fileset>
         </zip>
 

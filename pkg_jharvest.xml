@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="3.6" method="upgrade">
+    <name>JHarvest Package</name>
+    <author>KnowledgeArc Ltd</author>
+    <creationDate>2017-05-25</creationDate>
+    <packagename>jcar</packagename>
+    <version>1.0.0-beta</version>
+    <copyright>>Copyright (C) 2015-2017 KnowledgeArc Ltd. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html</license>
+    <packager>KnowledgeArc Ltd</packager>
+    <packagerurl>http://www.knowledgearc.org</packagerurl>
+    <description>Joomla! Harvest package.</description>
+
+    <files folder="packages">
+        <file type="component" id="com_jharvest" >com_jharvest.zip</file>
+        <file type="plugin" id="harvest" group="oai">plg_harvest_oai.zip</file>
+        <file type="plugin" id="ingest" group="dspace">plg_ingest_dspace.zip</file>
+    </files>
+
+    <updateservers>
+        <server type="extension" priority="1" name="JCar">https://raw.githubusercontent.com/knowledgearcdotorg/jharvest/master/manifest.xml</server>
+    </updateservers>
+</extension>
