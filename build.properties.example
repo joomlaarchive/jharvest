@@ -1,4 +1,6 @@
+id=jharvest
 src=.
 path.joomla=/var/www/html/
+package.extensions=com_jharvest.zip,plg_harvest_oai.zip,plg_ingest_dspace.zip
 package.version=x.x.x
 package.date=YYYY-MM-DD

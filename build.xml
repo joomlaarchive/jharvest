@@ -127,27 +127,42 @@
                     <fileset dir="${path.libs}/${directory}" includes="**/*"/>
                 </delete>
 
+                <mkdir dir="${package.dest}/libraries/${directory}"/>
+
+                <copy
+                    todir="${package.dest}/libraries/${directory}">
+                    <fileset dir="${src}/libraries/${directory}">
+                        <include name="**/**"/>
+                    </fileset>
+                </copy>
+
+                <composer command="install" composer="${composer.phar}">
+                    <arg value="--optimize-autoloader"/>
+                    <arg value="--working-dir"/>
+                    <arg path="${package.dest}/libraries/${directory}"/>
+                </composer>
+
                 <copy todir="${path.libs}/${directory}">
-                    <fileset dir="./libraries/${directory}">
+                    <fileset dir="${package.dest}/libraries/${directory}">
                         <include name="**/**"/>
                         <exclude name="language/**"/>
                     </fileset>
                 </copy>
 
                 <copy todir="${path.languages}">
-                    <fileset dir="./libraries/${directory}/language">
+                    <fileset dir="${package.dest}/libraries/${directory}/language">
                         <include name="**/**"/>
                     </fileset>
                 </copy>
 
                 <copy todir="${path.administrator.languages}">
-                    <fileset dir="./libraries/${directory}/language">
+                    <fileset dir="${package.dest}/libraries/${directory}/language">
                         <include name="**/**"/>
                     </fileset>
                 </copy>
 
                 <copy todir="${path.administrator}/manifests">
-                    <fileset dir="libraries/${directory}">
+                    <fileset dir="${package.dest}/libraries/${directory}">
                         <include name="*.xml"/>
                     </fileset>
                 </copy>
@@ -221,17 +236,9 @@
         <phpunit bootstrap="tests/unit/bootstrap.php">
             <formatter type="plain" usefile="false"/>
             <batchtest>
-                <fileset dir="tests/unit/suites/libraries/JSolr/Index/FileSystem">
-                    <include name="*Test.php"/>
+                <fileset dir="tests/unit/suites/libraries">
+                    <include name="**/*Test.php"/>
                 </fileset>
-                <!--fileset dir="tests/unit/suites/plugins">
-                    <include name="harvest/*Test.php"/>
-                    <include name="localstore/*Test.php"/>
-                    <include name="weblinks/*Test.php"/>
-                     it would be good to run the individual harvesting tests but something is causing the oai tests to fail. Most probably caused by both plugins being loaded. Would be good to have better control over loading and testing plugins.
-                    <exclude name="oai/*Test.php"/>
-                    <exclude name="opensearch/*Test.php"/>
-                </fileset-->
             </batchtest>
         </phpunit>
     </target>
@@ -258,8 +265,25 @@
     </target>
 
     <target name="package" description="Packages extensions ready for installation into Joomla!.">
+        <delete dir="${package.dest}"/>
         <mkdir dir="${package.dest}"/>
         <foreach list="${extensions}" param="extension" target="package_extensions"/>
+
+        <move todir="${package.dest}/packages">
+            <fileset dir="${package.dest}" includes="${package.extensions}"/>
+        </move>
+
+        <zip destfile="${package.dest}/pkg_jsolr.zip">
+            <fileset dir="${package.dest}">
+                <include name="packages/**"/>
+            </fileset>
+
+            <fileset dir=".">
+                <include name="pkg_jsolr.xml"/>
+            </fileset>
+        </zip>
+
+        <delete dir="${package.dest}/packages"/>
     </target>
 
     <target name="package_extensions" hidden="true">
@@ -285,6 +309,36 @@
                         <depth max="0" min="0"/>
                     </fileset>
                 </foreach>
+            </case>
+
+            <case value="libraries/${directory}">
+                <foreach param="subdirectory" absparam="plugin_path" target="package_plugin">
+                    <fileset dir="plugins/${directory}">
+                        <type type="dir"/>
+                        <depth max="0" min="0"/>
+                    </fileset>
+                </foreach>
+            </case>
+
+            <case value="libraries/${directory}">
+                <mkdir dir="${package.dest}/libraries/${directory}"/>
+
+                <copy
+                    todir="${package.dest}/libraries/${directory}">
+                    <fileset dir="${src}/libraries/${directory}">
+                        <include name="**/**"/>
+                    </fileset>
+                </copy>
+
+                <composer command="install" composer="${composer.phar}">
+                    <arg value="--optimize-autoloader"/>
+                    <arg value="--working-dir"/>
+                    <arg path="${package.dest}/libraries/${directory}"/>
+                </composer>
+
+                <zip
+                    destfile="${package.dest}/${directory}.zip"
+                    basedir="${package.dest}/${extension}/${directory}"/>
             </case>
 
             <default>
