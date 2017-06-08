@@ -68,39 +68,9 @@ class PlgHarvestOai extends JPlugin
                     $availablePrefixes[] = ((string)$node->nodeValue);
                 }
 
-                $dispatcher = JEventDispatcher::getInstance();
-                JPluginHelper::importPlugin("joai");
-                $result = $dispatcher->trigger('onJOaiQueryMetadataFormat');
-
-                $found = false;
-                while (($metadataPrefix = current($result)) && !$found) {
-                    if (array_search($metadataPrefix, $availablePrefixes) !== false) {
-                        $discovered = new JRegistry;
-                        $discovered->set('discovery.type', 'oai');
-                        $discovered->set('discovery.url', (string)$sourceUrl);
-                        $discovered->set('discovery.plugin.metadata', (string)$metadataPrefix);
-
-                        $found = true;
-                    }
-
-                    next($result);
-                }
-
-                // if a metadata format can be discovered, also discover the asset format.
-                if ($discovered) {
-                    $result = $dispatcher->trigger('onJOaiQueryAssetFormat');
-
-                    $found = false;
-                    while (($assetPrefix = current($result)) && !$found) {
-                        if (array_search($assetPrefix, $availablePrefixes) !== false) {
-                            $discovered->set('discovery.plugin.assets', (string)$assetPrefix);
-
-                            $found = true;
-                        }
-
-                        next($result);
-                    }
-                }
+                $discovered = new JRegistry;
+                $discovered->set('discovery.type', 'oai');
+                $discovered->set('discovery.url', (string)$sourceUrl);
             }
         }
 
@@ -114,8 +84,7 @@ class PlgHarvestOai extends JPlugin
      */
     public function onJHarvestRetrieve($harvest)
     {
-        $params = new \Joomla\Registry\Registry;
-        $params->loadString($harvest->params);
+        $params = new \Joomla\Registry\Registry($harvest->params);
 
         if ($params->get('discovery.type') != 'oai') {
             return;
@@ -125,7 +94,7 @@ class PlgHarvestOai extends JPlugin
 
         $http = JHttpFactory::getHttp();
 
-        $metadataPrefix = $params->get('discovery.plugin.metadata');
+        $metadataPrefix = $params->get('discovery.plugin.format.metadata');
 
         do {
             $queries = array();
@@ -148,7 +117,9 @@ class PlgHarvestOai extends JPlugin
                     $queries['set'] = $set;
                 }
 
-                $queries['until'] = $harvest->now->format('Y-m-d\TH:i:s\Z');
+                if ($until = $harvest->until) {
+                    $queries['until'] = $until->format('Y-m-d\TH:i:s\Z');
+                }
             }
 
             $url = new JUri($params->get('discovery.url'));
@@ -230,21 +201,20 @@ class PlgHarvestOai extends JPlugin
      */
     protected function cache($harvest, $data)
     {
-        $params = new \Joomla\Registry\Registry;
-        $params->loadString($harvest->params);
+        $params = new \Joomla\Registry\Registry($harvest->params);
 
         if (isset($data->header->identifier)) {
-            $context = 'joai.'.$params->get('discovery.plugin.metadata');
+            $context = 'joaipmh.'.$params->get('discovery.plugin.format.metadata');
 
             $dispatcher = JEventDispatcher::getInstance();
-            JPluginHelper::importPlugin("joai");
+            JPluginHelper::importPlugin("joaipmh");
 
-            $array = $dispatcher->trigger('onJOaiHarvestMetadata', array($context, $data->metadata));
+            $array = $dispatcher->trigger('onJOaiPmhHarvestMetadata', [$context, $data->metadata]);
 
             $cache = array("metadata"=>JArrayHelper::getValue($array, 0));
 
             if ($params->get('harvest_type') !== self::METADATA) {
-                $metadataPrefix = $params->get('discovery.plugin.assets');
+                $metadataPrefix = $params->get('discovery.plugin.format.assets');
 
                 $queries = array(
                     'verb'=>'GetRecord',
@@ -258,7 +228,7 @@ class PlgHarvestOai extends JPlugin
                 $response = $http->get($url);
 
                 if ((int)$response->code == 200) {
-                    $context = 'joai.'.$metadataPrefix;
+                    $context = 'joaiore.'.$metadataPrefix;
 
                     $node = simplexml_load_string($response->body);
 

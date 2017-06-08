@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="3.7" type="plugin" group="ingest" method="upgrade">
+    <name>plg_ingest_article</name>
+    <author>KnowledgeArc</author>
+    <creationDate>2017/06/08</creationDate>
+    <copyright>KnowledgeArc Ltd</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>development@knowledgearc.com</authorEmail>
+    <authorUrl>www.knowledgearc.org</authorUrl>
+    <version>1.0.0-beta</version>
+    <description>PLG_INGEST_ARTICLE_XML_DESCRIPTION</description>
+
+    <files>
+        <filename plugin="article">article.php</filename>
+    </files>
+
+    <install>
+    </install>
+
+    <uninstall>
+    </uninstall>
+
+    <update>
+    </update>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_ingest_article.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_ingest_article.sys.ini</language>
+    </languages>
+
+    <config>
+    </config>
+</extension>

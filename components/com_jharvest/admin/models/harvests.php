@@ -112,4 +112,20 @@ class JHarvestModelHarvests extends JModelList
 
         return $query;
     }
+
+    public function ingest()
+    {
+        JModelLegacy::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/models', 'JHarvestModel');
+
+        // a specific "until" date for all harvests. This ensures all endpoints are harvested
+        // up until the same date.
+        $now = JFactory::getDate();
+
+        foreach ($this->getItems() as $harvester) {
+            $harvest = JModelLegacy::getInstance('Harvest', 'JHarvestModel', ['ignore_request'=>true]);
+            $harvest->setState($harvest->getName().".id", $harvester->id);
+            $harvest->setState($harvest->getName().".harvest.until", $now);
+            $harvest->ingest();
+        }
+    }
 }

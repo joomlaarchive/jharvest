@@ -14,6 +14,8 @@ defined('_JEXEC') or die;
  */
 class JHarvestModelHarvest extends JModelAdmin
 {
+    const DEFAULT_INGESTION_LIMIT = 500;
+
     protected $typeAlias;
 
     public function __construct($config = array())
@@ -137,7 +139,6 @@ class JHarvestModelHarvest extends JModelAdmin
                 $this->setError($table->getError());
                 return false;
             }
-
         } catch (Exception $e) {
             JLog::addLogger(array());
             JLog::add($e->getMessage(), JLog::ERROR, 'jharvest');
@@ -166,8 +167,10 @@ class JHarvestModelHarvest extends JModelAdmin
 
         $url = JArrayHelper::getValue($data, 'originating_url');
 
+        $harvester = \Joomla\Utilities\ArrayHelper::getValue($data, 'harvester');
+
         $dispatcher = JEventDispatcher::getInstance();
-        JPluginHelper::importPlugin('harvest');
+        JPluginHelper::importPlugin('harvest', ($harvester ? $harvester : null));
 
         try {
             $result = $dispatcher->trigger('onJHarvestDiscover', array($url));
@@ -223,5 +226,60 @@ class JHarvestModelHarvest extends JModelAdmin
         }
 
         return $count;
+    }
+
+    public function ingest()
+    {
+        JModelLegacy::addIncludePath(__DIR__.'/models', 'JHarvestModel');
+
+        $app = JFactory::getApplication();
+        $dispatcher = JEventDispatcher::getInstance();
+
+        JPluginHelper::importPlugin('harvest');
+        JPluginHelper::importPlugin('ingest');
+
+        $data = $this->getItem();
+
+        $data->until = $this->getState($this->getName().".harvest.until");
+
+        //$dispatcher->trigger('onJHarvestRetrieve', [$data]);
+
+        $cache = JModelLegacy::getInstance('Cache', 'JHarvestModel', ['ignore_request'=>true]);
+
+        $params = JComponentHelper::getParams($this->get('option'));
+        $params->loadArray($data->params);
+
+        $limit = $params->get('limit', self::DEFAULT_INGESTION_LIMIT);
+
+        $cache->setState("list.limit", $limit);
+
+        $cache->setState("filter.harvest_id", $data->id);
+
+        $total = $cache->getTotal();
+
+        $start = 0;
+
+        while ($start < $total) {
+            $cache->setState("list.start", $start);
+            $items = $cache->getItems();
+
+            // batch process cache items.
+            $dispatcher->trigger('onJHarvestIngest', [$items, $params]);
+
+            $start = (int)$cache->getState("list.start") + (int)$limit;
+        }
+
+        // only record last successful harvest which had records.
+        if ($total > 0) {
+            $data->harvested = $data->until->toSql();
+        }
+
+        $data->runs++;
+
+        if ((bool)$data->run_once === true) {
+            $data->state = 2;
+        }
+
+        $this->save(\Joomla\Utilities\ArrayHelper::fromObject($data));
     }
 }

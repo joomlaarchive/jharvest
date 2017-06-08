@@ -17,6 +17,7 @@ if (array_key_exists('REQUEST_METHOD', $_SERVER)) die();
 
 // Set flag that this is a parent file.
 define('_JEXEC', 1);
+define('JDEBUG', false);
 
 if (PHP_SAPI !== 'cli') {
     die('This is a command line only application.');
@@ -109,7 +110,7 @@ class JHarvestCli extends JApplicationCli
             $params = new Registry;
             $params->loadString($harvest->params);
 
-            fwrite(STDOUT, $harvest->id."\t".$params->get('discovery.url'));
+            fwrite(STDOUT, $harvest->id."\t".$params->get('discovery.url')."\r\n");
         }
     }
 
@@ -126,45 +127,11 @@ class JHarvestCli extends JApplicationCli
 
         JHarvestHelper::log("started ".(string)$start);
 
-        $dispatcher = JEventDispatcher::getInstance();
-
-        JPluginHelper::importPlugin('harvest');
-        JPluginHelper::importPlugin('ingest');
-
-        foreach ($harvests->getItems() as $harvest) {
-            try {
-                $now = new JDate('now');
-
-                $table = JTable::getInstance('Harvest', 'JHarvestTable');
-                $table->load($harvest->id);
-                $table->now = $now;
-
-                $dispatcher->trigger('onJHarvestRetrieve', array($table));
-                $dispatcher->trigger('onJHarvestIngest', array($table));
-
-                $query = JFactory::getDbo()->getQuery(true);
-                $query->select('count(id)')->from('#__jharvest_cache');
-                $total = (int)JFactory::getDbo()->setQuery($query)->loadResult();
-
-                // only record last successful harvest which had records.
-                if ($total > 0) {
-                    $table->harvested = $now->toSql();
-                }
-
-                $table->runs++;
-
-                if ((bool)$table->run_once === true) {
-                    $table->state = 2;
-                }
-
-                $table->store();
-            } catch (Exception $e) {
-                JHarvestHelper::log($e->getMessage()."\n");
-                JHarvestHelper::log($e->getTraceAsString()."\n");
-            }
-
-            // clear the cache, even if there is an error.
-            JHarvestHelper::clearCache();
+        try {
+            $harvests->ingest();
+        } catch (Exception $e) {
+            JHarvestHelper::log($e->getMessage()."\n");
+            JHarvestHelper::log($e->getTraceAsString()."\n");
         }
 
         $end = new JDate('now');

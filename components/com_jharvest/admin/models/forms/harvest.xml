@@ -58,7 +58,8 @@
             class="inputbox"
             size="22"
             format="%Y-%m-%d %H:%M:%S"
-            filter="user_utc"/>
+            filter="user_utc"
+            hint="COM_JHARVEST_HARVEST_HARVESTED_HINT"/>
 
         <field
             name="id"

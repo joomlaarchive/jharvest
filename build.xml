@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="JSolr" default="update" basedir=".">
+<project name="Project builder for Joomla!" default="update" basedir=".">
     <property   file="build.properties"/>
     <property   name="path.administrator"            value="${path.joomla}/administrator"/>
     <property   name="path.administrator.components" value="${path.administrator}/components"/>
@@ -380,7 +380,7 @@
     </target>
 
     <target name="help" description="Help documentation for this build file.">
-        <echo message="JSolr for Joomla!"/>
+        <echo message="Project Builder for Joomla!"/>
         <echo message="Targets:"/>
 
         <echo message="cpd          Check for copy/paste code duplication."/>

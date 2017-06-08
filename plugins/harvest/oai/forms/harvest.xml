@@ -24,18 +24,23 @@
 
         <fields name="discovery">
             <fields name="plugin">
-                <fieldset name="details">
-                    <field
-                        name="metadata"
-                        label="PLG_HARVEST_OAI_DISCOVERY_METADATA_LABEL"
-                        description="PLG_HARVEST_OAI_DISCOVERY_METADATA_DESC"
-                        readonly="true"/>
-                    <field
-                        name="assets"
-                        label="PLG_HARVEST_OAI_DISCOVERY_ASSETS_LABEL"
-                        description="PLG_HARVEST_OAI_DISCOVERY_ASSETS_DESC"
-                        readonly="true"/>
-                </fieldset>
+                <fields name="format">
+                    <fieldset name="details">
+                        <field
+                            name="metadata"
+                            type="plugins"
+                            folder="joaipmh"
+                            label="PLG_HARVEST_OAI_DISCOVERY_METADATA_LABEL"
+                            description="PLG_HARVEST_OAI_DISCOVERY_METADATA_DESC"/>
+
+                        <field
+                            name="assets"
+                            type="plugins"
+                            folder="joaiore"
+                            label="PLG_HARVEST_OAI_DISCOVERY_ASSET_LABEL"
+                            description="PLG_HARVEST_OAI_DISCOVERY_ASSET_DESC"/>
+                    </fieldset>
+                </fields>
             </fields>
         </fields>
     </fields>
