@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension type="plugin" version="3.7.0" group="fields" method="upgrade">
+    <name>plg_fields_metadata</name>
+    <author>KnowledgeArc</author>
+    <creationDate>2017-05-09</creationDate>
+    <copyright>Copyright (C) 2017 KnowledgeArc Ltd. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>development@knowledgearc.com</authorEmail>
+    <authorUrl>www.knowledgearc.org</authorUrl>
+    <version>1.0.0</version>
+    <description>PLG_FIELDS_TEXT_XML_DESCRIPTION</description>
+    <files>
+        <filename plugin="metadata">metadata.php</filename>
+        <folder>params</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <media destination="fields/metadata" folder="media">
+        <folder>js</folder>
+    </media>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_fields_metadata.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_fields_metadata.sys.ini</language>
+    </languages>
+    <config>
+    </config>
+</extension>

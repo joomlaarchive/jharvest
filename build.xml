@@ -214,14 +214,28 @@
             <then>
                 <delete includeemptydirs="false">
                     <fileset dir="${path.plugins}/${directory}/${subdirectory}" includes="**/*"/>
+                    <fileset dir="${path.media}/${directory}/${subdirectory}" includes="**/*"/>
                 </delete>
 
                 <copy todir="${path.plugins}/${directory}/${subdirectory}">
                     <fileset dir="${src}/plugins/${directory}/${subdirectory}">
                         <include name="**/**"/>
                         <exclude name="language/**"/>
+                        <exclude name="media/**"/>
                     </fileset>
                 </copy>
+
+                <if>
+                    <available file='${src}/plugins/${directory}/${subdirectory}/media' type='dir'/>
+                    <then>
+                        <mkdir dir="${path.media}/${directory}/${subdirectory}"/>
+                        <copy todir="${path.media}/${directory}/${subdirectory}">
+                            <fileset dir="${src}/plugins/${directory}/${subdirectory}/media">
+                                <include name="**/**"/>
+                            </fileset>
+                        </copy>
+                    </then>
+                </if>
 
                 <copy todir="${path.administrator.languages}">
                     <fileset dir="${src}/plugins/${directory}/${subdirectory}/language">
