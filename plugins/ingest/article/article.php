@@ -7,6 +7,7 @@
 defined('_JEXEC') or die;
 
 use \Joomla\Utilities\ArrayHelper;
+use \Joomla\String\StringHelper;
 
 JLoader::import('joomla.filesystem.folder');
 
@@ -21,6 +22,8 @@ class PlgIngestArticle extends JPlugin
 
     public function onJHarvestIngest($items, $params)
     {
+        $this->params->merge($params);
+
         if (!$this->params->get('user_id')) {
             throw new Exception(JText::_("PLG_INGEST_ARTICLE_NO_USER"));
         }
@@ -86,11 +89,13 @@ class PlgIngestArticle extends JPlugin
                 $data["language"] = "*";
             }
 
-            $data["catid"] = $params->get('ingest.article.catid');
+            $data["catid"] = $this->params->get('ingest.article.catid');
             $data["alias"] = null;
 
             foreach (ArrayHelper::fromObject($metadata) as $key=>$value) {
                 $i = 0;
+
+                $this->createField($key);
 
                 foreach ($value as $v) {
                     $data["com_fields"][$key]["$key".$i] = $v;
@@ -110,6 +115,59 @@ class PlgIngestArticle extends JPlugin
             }
 
             $article->delete($article->getItem()->id);
+        }
+    }
+
+    private function createField($fieldName)
+    {
+        $ignoreFields = ["title", "description", "language"];
+
+        if ((bool)$this->params->get('autocreate_fields', 1)) {
+            JModelLegacy::addIncludePath(
+                JPATH_ROOT.'/administrator/components/com_fields/models',
+                'FieldsModel');
+
+            /*\JLoader::register(
+                'FieldsHelper',
+                JPATH_ADMINISTRATOR.'/components/com_fields/helpers/fields.php');
+
+            $fields = FieldsHelper::getFields('com_content.article');*/
+
+            $model = \JModelLegacy::getInstance("Fields", "FieldsModel", ["ignore_request"=>true]);
+            $model->setState("filter.name", $fieldName);
+            $model->setState("filter.context", "com_content.article");
+
+            $fields = $model->getItems();
+
+            $found = false;
+
+            while (($field = current($fields)) && !$found) {
+                $found = (StringHelper::strtolower($fieldName) == $field->name);
+
+                next($fields);
+            }
+
+            if (!$found && array_search($fieldName, $ignoreFields) === false) {
+                $model = \JModelLegacy::getInstance(
+                    'Field',
+                    'FieldsModel',
+                    ["ignore_request"=>true]);
+
+                $data =
+                [
+                    "name"=>$fieldName,
+                    "title"=>StringHelper::ucfirst($fieldName),
+                    "assigned_cat_ids"=>$this->params->get('autocreate_field_cat_ids'),
+                    "group_id"=>$this->params->get('autocreate_field_group_id'),
+                    "type"=>"metadata",
+                    "state"=>1,
+                    "context"=>"com_content.article"
+                ];
+
+                if (!$model->save($data)) {
+                    JHarvestHelper::log($fieldName." ".$model->getError(), JLog::ERROR);
+                }
+            }
         }
     }
 }

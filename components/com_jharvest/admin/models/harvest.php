@@ -242,7 +242,7 @@ class JHarvestModelHarvest extends JModelAdmin
 
         $data->until = $this->getState($this->getName().".harvest.until");
 
-        //$dispatcher->trigger('onJHarvestRetrieve', [$data]);
+        $dispatcher->trigger('onJHarvestRetrieve', [$data]);
 
         $cache = JModelLegacy::getInstance('Cache', 'JHarvestModel', ['ignore_request'=>true]);
 

@@ -30,13 +30,47 @@
 
     <config>
         <fields name="params">
-            <fieldset name="basic">
+            <fieldset
+                name="basic"
+                addfieldpath="/administrator/components/com_fields/models/fields">
                 <field
                     name="user_id"
                     type="user"
                     label="PLG_INGEST_ARTICLE_FIELD_USERID_LABEL"
                     description="PLG_INGEST_ARTICLE_FIELD_USERID_DESC"
                     size="45"/>
+
+                <field
+                    name="autocreate_fields"
+                    type="radio"
+                    class="btn-group btn-group-yesno"
+                    default="1"
+                    label="PLG_INGEST_ARTICLE_AUTOCREATE_FIELDS_LABEL"
+                    description="PLG_INGEST_ARTICLE_AUTOCREATE_FIELDS_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+                <field
+                    name="autocreate_field_group_id"
+                    type="fieldgroups"
+                    context="com_content.article"
+                    label="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_GROUP_ID_LABEL"
+                    description="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_GROUP_ID_DESC"
+                    showon="autocreate_fields:1">
+                    <option value="0">JNONE</option>
+                </field>
+
+                <field
+                    name="autocreate_field_cat_ids"
+                    type="category"
+                    label="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_CAT_IDS_LABEL"
+                    extension="com_content"
+                    description="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_CAT_IDS_DESC"
+                    multiple="true"
+                    showon="autocreate_fields:1">
+                    <option value="">JALL</option>
+                </field>
             </fieldset>
         </fields>
     </config>
