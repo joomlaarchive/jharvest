@@ -29,5 +29,15 @@
     </languages>
 
     <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="user_id"
+                    type="user"
+                    label="PLG_INGEST_ARTICLE_FIELD_USERID_LABEL"
+                    description="PLG_INGEST_ARTICLE_FIELD_USERID_DESC"
+                    size="45"/>
+            </fieldset>
+        </fields>
     </config>
 </extension>

@@ -34,6 +34,8 @@ if (!defined('_JDEFINES')) {
 }
 
 define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/com_jharvest');
+define('JPATH_COMPONENT', JPATH_BASE . '/components/com_jharvest');
+
 
 // Get the framework.
 if (file_exists(JPATH_LIBRARIES . '/import.legacy.php'))
@@ -148,32 +150,7 @@ class JHarvestCli extends JApplicationCli
     {
         $version = "1.0";
 
-        $out = <<<EOT
-JHarvest CLI $version
-Copyright (C) 2014-2016 KnowledgeArc Ltd
--------------------------------------------------------------------------------
-JHarvest is Free Software, distributed under the terms of the GNU General
-Public License version 3 or, at your option, any later version.
-This program comes with ABSOLUTELY NO WARRANTY as per sections 15 & 16 of the
-license. See http://www.gnu.org/licenses/gpl-3.0.html for details.
--------------------------------------------------------------------------------
-
-Usage: jspace harvest [OPTIONS] [task]
-
-Provides harvesting functions from the command line.
-
-[OPTIONS]
-  -v, --verbose              Writes more information.
-  -q, --quiet                Suppresses all output including errors.
-
-[task]
-  --list                     Lists all available harvests.
-  --harvest                  Runs each harvest, saving the ingested data to a cache table.
-  -h, --help                 Prints this help.
-
-EOT;
-
-        $this->out($out);
+        $this->out(JText::sprintf("COM_JHARVEST_CLI_HELP", $version));
     }
 }
 
