@@ -36,10 +36,10 @@ $sublayout = 'section';
 ?>
 
 <div class="row-fluid">
-    <div class="metadata-wrapper metadata-layout">
-        <div class="metadata"
+    <div class="metadata-repeatable-wrapper metadata-layout">
+        <div class="metadata-repeatable"
             data-bt-add="a.group-add" data-bt-remove="a.group-remove" data-bt-move="a.group-move"
-            data-repeatable-element="div.metadata-group" data-minimum="<?php echo $min; ?>" data-maximum="<?php echo $max; ?>">
+            data-repeatable-element="div.metadata-repeatable-group" data-minimum="<?php echo $min; ?>" data-maximum="<?php echo $max; ?>">
             <?php if (!empty($buttons['add'])) : ?>
             <div class="btn-toolbar">
                 <div class="btn-group">
@@ -53,7 +53,7 @@ $sublayout = 'section';
         endforeach;
         ?>
         <?php if ($multiple) : ?>
-        <script type="text/metadata-template-section" class="metadata-template-section">
+        <script type="text/metadata-repeatable-template-section" class="metadata-repeatable-template-section">
         <?php echo $this->sublayout($sublayout, ['form'=>$tmpl, 'basegroup'=>$fieldname, 'group'=>$fieldname.'X', 'buttons'=>$buttons]); ?>
         </script>
         <?php endif; ?>
