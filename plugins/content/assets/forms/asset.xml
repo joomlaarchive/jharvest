@@ -1,0 +1,31 @@
+<form>
+    <field name="id" type="hidden"/>
+
+    <field
+        name="link"
+        type="url"
+        validate="url"
+        filter="url"
+        relative="true"
+        label="PLG_CONTENT_ASSETS_FIELD_LINK_LABEL"
+        description="PLG_CONTENT_ASSETS_FIELD_LINK_DESC"/>
+
+    <field name="description"
+            type="text"
+            label="PLG_CONTENT_ASSETS_FIELD_DESCRIPTION_LABEL"
+           description="PLG_CONTENT_ASSETS_FIELD_DESCRIPTION_DESC"
+            size="20"/>
+    <field
+        name="target"
+        type="list"
+        label="PLG_CONTENT_ASSETS_FIELD_BROWSERNAV_LABEL"
+        description="PLG_CONTENT_ASSETS_FIELD_BROWSERNAV_DESC"
+        default=""
+        filter="options"
+        useglobal="true">
+        <option value="0">JBROWSERTARGET_PARENT</option>
+        <option value="1">JBROWSERTARGET_NEW</option>
+        <option value="2">JBROWSERTARGET_POPUP</option>
+        <option value="3">JBROWSERTARGET_MODAL</option>
+    </field>
+</form>

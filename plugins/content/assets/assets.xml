@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="3.7" type="plugin" group="content" method="upgrade">
+    <name>plg_content_assets</name>
+    <author>KnowledgeArc</author>
+    <creationDate>2017/06/25</creationDate>
+    <copyright>KnowledgeArc Ltd</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>development@knowledgearc.com</authorEmail>
+    <authorUrl>www.knowledgearc.org</authorUrl>
+    <version>1.0.0-beta</version>
+    <description>PLG_CONTENT_ASSETS_XML_DESCRIPTION</description>
+
+    <files>
+        <filename plugin="assets">assets.php</filename>
+        <folder>forms</folder>
+        <folder>sql</folder>
+        <folder>tables</folder>
+    </files>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_content_assets.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_content_assets.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset
+                name="basic"
+                addfieldpath="/administrator/components/com_fields/models/fields">
+                <field
+                    name="catids"
+                    type="category"
+                    label="JCATEGORY"
+                    extension="com_content"
+                    description="JFIELD_FIELDS_CATEGORY_DESC"
+                    multiple="true">
+                    <option value="">JALL</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>
