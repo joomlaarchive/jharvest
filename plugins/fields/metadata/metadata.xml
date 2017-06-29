@@ -11,6 +11,9 @@
     <description>PLG_FIELDS_TEXT_XML_DESCRIPTION</description>
     <files>
         <filename plugin="metadata">metadata.php</filename>
+        <folder>fields</folder>
+        <folder>forms</folder>
+        <folder>layouts</folder>
         <folder>params</folder>
         <folder>tmpl</folder>
     </files>
