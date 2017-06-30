@@ -1,0 +1,35 @@
+.metadata-repeatable-wrapper.metadata-layout {
+    display: flex;
+    flex-direction: column;
+}
+
+.metadata-repeatable-wrapper.metadata-layout
+.metadata-repeatable.ui-sortable {
+    display: flex;
+    flex-direction: column;
+}
+
+.metadata-repeatable-wrapper.metadata-layout
+.metadata-repeatable.ui-sortable
+.metadata-repeatable-group {
+    display: flex;
+}
+
+.metadata-repeatable-wrapper.metadata-layout
+.metadata-repeatable.ui-sortable
+.metadata-repeatable-group>.control-group>.controls {
+    margin-top: 4px;
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.metadata-repeatable-wrapper.metadata-layout
+.metadata-repeatable.ui-sortable
+.metadata-repeatable-group>.control-group>.controls input[type="text"] {
+    margin-top: 2px;
+}
+
+.metadata-repeatable-wrapper.metadata-layout
+.btn-toolbar.text-right {
+    order: 2;
+}

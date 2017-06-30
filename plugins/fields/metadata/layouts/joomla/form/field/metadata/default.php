@@ -29,7 +29,8 @@ extract($displayData);
 // Add script
 if ($multiple) {
     JHtml::_('jquery.ui', array('core', 'sortable'));
-    JHtml::_('script', 'fields/metadata/repeatable.js', array('version' => 'auto', 'relative' => true));
+    JHtml::_('script', 'fields/metadata/repeatable.js', array('version'=>'auto', 'relative'=>true));
+    JHtml::_('stylesheet', 'fields/metadata/metadata.css', array('version'=>'auto', 'relative'=>true));
 }
 
 $sublayout = 'section';
