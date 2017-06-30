@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `#__content_assets` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `link` VARCHAR(255) NOT NULL DEFAULT '',
+  `title` VARCHAR(255) NOT NULL DEFAULT '',
   `description` TEXT NOT NULL,
   `ordering` INT(11) NOT NULL DEFAULT 0,
   `content_id` INT(11) NOT NULL,

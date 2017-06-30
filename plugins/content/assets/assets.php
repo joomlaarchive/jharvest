@@ -5,6 +5,8 @@
  */
 defined('_JEXEC') or die;
 
+use \Joomla\Utilities\ArrayHelper;
+
 /**
  * Asset Links plugin.
  */
@@ -36,6 +38,10 @@ class PlgContentAssets extends JPlugin
             return true;
         }
 
+        if (!$this->isInAssignedCategories($data->catid)) {
+            return true;
+        }
+
         JForm::addFormPath(__DIR__.'/forms');
         $form->loadFile('assets', false);
 
@@ -53,6 +59,10 @@ class PlgContentAssets extends JPlugin
     public function onContentPrepareData($context, $data)
     {
         if (!in_array($context, ['com_content.article'])) {
+            return true;
+        }
+
+        if (!$this->isInAssignedCategories($data->catid)) {
             return true;
         }
 
@@ -129,6 +139,10 @@ class PlgContentAssets extends JPlugin
     public function onContentPrepare($context, $item)
     {
         if (in_array($context, ['com_content.article'])) {
+            if (!$this->isInAssignedCategories($item->catid)) {
+                return;
+            }
+
             $db = JFactory::getDbo();
             $query = $db->getQuery(true);
 
@@ -146,12 +160,28 @@ class PlgContentAssets extends JPlugin
 
     public function onContentAfterDisplay($context, $item, $params, $limitstart = 0)
     {
-        if (in_array($context, ['com_content.article'])) {
+        if (in_array($context, ['com_content.article']) &&
+            isset($item->plg_content_assets)) {
             $basePath =  __DIR__.'/layouts';
 
             $layout = new JLayoutFile('content.assets.default', $basePath);
 
             return $layout->render($item->plg_content_assets);
         }
+    }
+
+    private function isInAssignedCategories($cid)
+    {
+        $cids = $this->params->get("catids");
+
+        if (count($cids) == 1 && ArrayHelper::getValue($cids, 0) == "") {
+            return true;
+        }
+
+        if (array_search($cid, $cids) !== false) {
+            return true;
+        }
+
+        return false;
     }
 }
