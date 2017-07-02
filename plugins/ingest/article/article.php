@@ -54,7 +54,7 @@ class PlgIngestArticle extends JPlugin
             if (isset($metadata->title) && !is_null($metadata->title)) {
                 $data["title"] = array_shift($metadata->title);
             } else {
-                $data["title"] = "Undefined";
+                $data["title"] = JText::_("PLG_INGEST_ARTICLE_UNDEFINED");
             }
 
             if (isset($metadata->description) && !is_null($metadata->description)) {
@@ -103,6 +103,15 @@ class PlgIngestArticle extends JPlugin
                 }
             }
 
+            $data["plg_content_assets"] = ["asset"];
+
+            foreach ($assets as $asset) {
+                $asset->link = $asset->url;
+                unset($asset->url);
+
+                $data["plg_content_assets"]["asset"][] = ArrayHelper::fromObject($asset);
+            }
+
             // enables the field after save event.
             JPluginHelper::importPlugin('system');
 
@@ -126,12 +135,6 @@ class PlgIngestArticle extends JPlugin
             JModelLegacy::addIncludePath(
                 JPATH_ROOT.'/administrator/components/com_fields/models',
                 'FieldsModel');
-
-            /*\JLoader::register(
-                'FieldsHelper',
-                JPATH_ADMINISTRATOR.'/components/com_fields/helpers/fields.php');
-
-            $fields = FieldsHelper::getFields('com_content.article');*/
 
             $model = \JModelLegacy::getInstance("Fields", "FieldsModel", ["ignore_request"=>true]);
             $model->setState("filter.name", $fieldName);

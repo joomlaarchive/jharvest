@@ -11,8 +11,8 @@
                         label="PLG_INGEST_ARTICLE_CATID_LABEL"
                         description="PLG_INGEST_ARTICLE_CATID_DESC"
                         required="true"/>
-                    </fieldset>
-                </fields>
+                </fieldset>
             </fields>
         </fields>
-    </form>
+    </fields>
+</form>

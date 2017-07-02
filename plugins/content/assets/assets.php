@@ -136,6 +136,45 @@ class PlgContentAssets extends JPlugin
         return true;
     }
 
+    public function onContentAfterDelete($context, $item)
+    {
+        if (empty($item->id)) {
+            return true;
+        }
+
+        if (!in_array($context, ['com_content.article'])) {
+            return true;
+        }
+
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query
+            ->select("id")
+            ->from("#__content_assets")
+            ->where("content_id=".$item->id);
+
+        $db->setQuery($query);
+
+        $rows = $db->loadColumn();
+
+        try {
+            JTable::addIncludePath(__DIR__."/tables");
+            $table = JTable::getInstance('Asset', 'ContentTable');
+
+            foreach ($rows as $row) {
+                if (!$table->delete((int)$row)) {
+                    throw new Exception($table->getError());
+                }
+            }
+        } catch (Exception $e) {
+            $this->_subject->setError($e->getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
     public function onContentPrepare($context, $item)
     {
         if (in_array($context, ['com_content.article'])) {

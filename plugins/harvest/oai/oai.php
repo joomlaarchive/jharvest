@@ -232,7 +232,9 @@ class PlgHarvestOai extends JPlugin
 
                     $node = simplexml_load_string($response->body);
 
-                    $array = $dispatcher->trigger('onJOaiHarvestAssets', array($context, $node));
+                    JPluginHelper::importPlugin("joaiore");
+
+                    $array = $dispatcher->trigger('onJOaiOreHarvestAssets', array($context, $node));
 
                     $cache["assets"] = JArrayHelper::getValue($array, 0, array());
                 } else {
