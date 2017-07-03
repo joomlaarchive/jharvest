@@ -14,13 +14,11 @@
         name="title"
         type="text"
         label="PLG_CONTENT_ASSETS_FIELD_TITLE_LABEL"
-        description="PLG_CONTENT_ASSETS_FIELD_TITLE_DESC"
-        size="20"/>
+        description="PLG_CONTENT_ASSETS_FIELD_TITLE_DESC"/>
 
     <field
         name="description"
-        type="text"
+        type="textarea"
         label="PLG_CONTENT_ASSETS_FIELD_DESCRIPTION_LABEL"
-        description="PLG_CONTENT_ASSETS_FIELD_DESCRIPTION_DESC"
-        size="20"/>
+        description="PLG_CONTENT_ASSETS_FIELD_DESCRIPTION_DESC"/>
 </form>
