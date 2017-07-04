@@ -160,6 +160,7 @@ class PlgIngestArticle extends JPlugin
                 [
                     "name"=>$fieldName,
                     "title"=>StringHelper::ucfirst($fieldName),
+                    "label"=>StringHelper::ucfirst($fieldName),
                     "assigned_cat_ids"=>$this->params->get('autocreate_field_cat_ids'),
                     "group_id"=>$this->params->get('autocreate_field_group_id'),
                     "type"=>"metadata",
