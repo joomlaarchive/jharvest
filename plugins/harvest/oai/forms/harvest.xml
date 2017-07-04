@@ -7,19 +7,6 @@
                 type="text"
                 label="PLG_HARVEST_OAI_SETS_LABEL"
                 description="PLG_HARVEST_OAI_SETS_DESC"/>
-
-            <field
-                name="harvest_type"
-                type="list"
-                label="PLG_HARVEST_OAI_HARVESTTYPE_LABEL"
-                description="PLG_HARVEST_OAI_HARVESTTYPE_DESC"
-                filter="intval"
-                size="1"
-                default="2">
-                <!--option value="0">PLG_HARVEST_OAI_HARVESTTYPE_OPTION_METADATA</option>
-                <option value="1">PLG_HARVEST_OAI_HARVESTTYPE_OPTION_LINKS</option-->
-                <option value="2">PLG_HARVEST_OAI_HARVESTTYPE_OPTION_ASSETS</option>
-            </field>
         </fieldset>
 
         <fields name="discovery">
@@ -31,14 +18,19 @@
                             type="plugins"
                             folder="joaipmh"
                             label="PLG_HARVEST_OAI_DISCOVERY_METADATA_LABEL"
-                            description="PLG_HARVEST_OAI_DISCOVERY_METADATA_DESC"/>
+                            description="PLG_HARVEST_OAI_DISCOVERY_METADATA_DESC"
+                            required="true">
+                            <option value="">JSELECT</option>
+                        </field>
 
                         <field
                             name="assets"
                             type="plugins"
                             folder="joaiore"
                             label="PLG_HARVEST_OAI_DISCOVERY_ASSET_LABEL"
-                            description="PLG_HARVEST_OAI_DISCOVERY_ASSET_DESC"/>
+                            description="PLG_HARVEST_OAI_DISCOVERY_ASSET_DESC">
+                            <option value="">JNONE</option>
+                        </field>
                     </fieldset>
                 </fields>
             </fields>

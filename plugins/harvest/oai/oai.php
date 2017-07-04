@@ -15,10 +15,6 @@ class PlgHarvestOai extends JPlugin
 {
     const FOLLOW_ON = 0;
 
-    const METADATA  = 0;
-    const LINKS     = 1;
-    const ASSETS    = 2;
-
     protected $autoloadLanguage = true;
 
     public function __construct($subject, $config = array())
@@ -213,9 +209,10 @@ class PlgHarvestOai extends JPlugin
 
             $cache = array("metadata"=>JArrayHelper::getValue($array, 0));
 
-            if ($params->get('harvest_type') !== self::METADATA) {
-                $metadataPrefix = $params->get('discovery.plugin.format.assets');
+            // probe for assets (if an ORE plugin is enabled)
+            $metadataPrefix = $params->get('discovery.plugin.format.assets');
 
+            if ($metadataPrefix) {
                 $queries = array(
                     'verb'=>'GetRecord',
                     'identifier'=>(string)$data->header->identifier,
@@ -237,10 +234,11 @@ class PlgHarvestOai extends JPlugin
                     $array = $dispatcher->trigger('onJOaiOreHarvestAssets', array($context, $node));
 
                     $cache["assets"] = JArrayHelper::getValue($array, 0, array());
+                } else if ((int)$response->code == 404) {
+                    JLog::add("No valid ORE endpoint found. Continuing without files...");
                 } else {
                     throw new Exception ((string)$response, (int)$response->code);
                 }
-
             }
 
             $table = JTable::getInstance('Cache', 'JHarvestTable');
