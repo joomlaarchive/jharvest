@@ -13,7 +13,10 @@
 
     <files folder="packages">
         <file type="component" id="com_jharvest" >com_jharvest.zip</file>
+        <file type="plugin" id="content" group="assets">plg_content_assets.zip</file>
+        <file type="plugin" id="fields" group="metadata">plg_fields_metadata.zip</file>
         <file type="plugin" id="harvest" group="oai">plg_harvest_oai.zip</file>
+        <file type="plugin" id="ingest" group="article">plg_ingest_article.zip</file>
         <file type="plugin" id="ingest" group="dspace">plg_ingest_dspace.zip</file>
     </files>
 
