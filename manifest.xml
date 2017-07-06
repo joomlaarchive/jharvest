@@ -7,7 +7,7 @@
         <type>package</type>
         <version>1.0.0-beta</version>
         <client>0</client>
-        <infourl title="JCar">https://github.com/knowledgearcdotorg/jharvest/releases/tag/1.0.0-beta</infourl>
+        <infourl title="JHarvest">https://github.com/knowledgearcdotorg/jharvest/releases/tag/1.0.0-beta</infourl>
         <downloads>
             <downloadurl type="full" format="zip">https://github.com/knowledgearcdotorg/jharvest/releases/download/1.2.1/pkg_jharvest.zip</downloadurl>
         </downloads>
