@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 /**
- * Route Table class.
+ * Asset Table class.
  */
 class ContentTableAsset extends JTable
 {
@@ -35,16 +35,16 @@ class ContentTableAsset extends JTable
         // Check for valid title
         if (trim($this->title) == '')
         {
-            $this->setError(JText::_('COM_JCAR_WARNING_PROVIDE_VALID_TITLE'));
+            $this->setError(JText::_('PLG_CONTENT_ASSET_WARNING_PROVIDE_VALID_TITLE'));
 
             return false;
         }
 
         // Verify that the title is unique
-        $table = JTable::getInstance('Route', 'JCarTable');
+        $table = JTable::getInstance('Asset', 'ContentTable');
 
         if ($table->load(array('title'=>$this->title)) && ($table->id != $this->id || $this->id == 0)) {
-            $this->setError(JText::_('COM_JCAR_ERROR_UNIQUE_TITLE'));
+            $this->setError(JText::_('PLG_CONTENT_ASSET_ERROR_UNIQUE_TITLE'));
 
             return false;
         }
