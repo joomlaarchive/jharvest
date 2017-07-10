@@ -26,7 +26,7 @@ class PlgSystemArticle extends JPlugin
         $this->params->merge($params);
 
         if (!$this->params->get('user_id')) {
-            throw new Exception(JText::_("PLG_INGEST_ARTICLE_NO_USER"));
+            throw new Exception(JText::_("PLG_SYSTEM_ARTICLE_NO_USER"));
         }
 
         $user = \JFactory::getUser($this->params->get('user_id'));
@@ -35,7 +35,7 @@ class PlgSystemArticle extends JPlugin
         // A general test as to whether the Article Manager allows the current
         // user to edit custom field values.
         if (!$user->authorise('core.edit.value', "com_content")) {
-            throw new Exception(JText::_("PLG_INGEST_ARTICLE_EDIT_FIELD_VALUES_NOT_ALLOWED"));
+            throw new Exception(JText::_("PLG_SYSTEM_ARTICLE_EDIT_FIELD_VALUES_NOT_ALLOWED"));
         }
 
         JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_content/models', 'ContentModel');
@@ -55,7 +55,7 @@ class PlgSystemArticle extends JPlugin
             if (isset($metadata->title) && !is_null($metadata->title)) {
                 $data["title"] = array_shift($metadata->title);
             } else {
-                $data["title"] = JText::_("PLG_INGEST_ARTICLE_UNDEFINED");
+                $data["title"] = JText::_("PLG_SYSTEM_ARTICLE_UNDEFINED");
             }
 
             if (isset($metadata->description) && !is_null($metadata->description)) {
@@ -112,9 +112,6 @@ class PlgSystemArticle extends JPlugin
 
                 $data["plg_content_assets"]["asset"][] = ArrayHelper::fromObject($asset);
             }
-
-            // enables the field after save event.
-            JPluginHelper::importPlugin('system');
 
             // trick com_content into generating new aliases and handling duplicate
             // titles.
@@ -186,6 +183,36 @@ class PlgSystemArticle extends JPlugin
                 }
             }
         }
+    }
+
+    /**
+     * Add the assets form field to the article form.
+     *
+     * @param   JForm  $form
+     * @param   array  $data
+     *
+     * @return  bool   True if the additional form fields are loaded correctly,
+     * false otherwise.
+     */
+    public function onContentPrepareForm($form, $data)
+    {
+        if (!($form instanceof JForm)) {
+            $this->_subject->setError('JERROR_NOT_A_FORM');
+
+            return false;
+        }
+
+        // Check we are manipulating a valid form.
+        $name = $form->getName();
+
+        if (!in_array($name, ['com_jharvest.harvest'])) {
+            return true;
+        }
+
+        JForm::addFormPath(__DIR__.'/forms');
+        $form->loadFile('params', false);
+
+        return true;
     }
 
     public function onContentBeforeDelete($context, $item)

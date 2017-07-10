@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension version="3.7" type="plugin" group="ingest" method="upgrade">
-    <name>plg_ingest_article</name>
+<extension version="3.7" type="plugin" group="system" method="upgrade">
+    <name>plg_system_article</name>
     <author>KnowledgeArc</author>
     <creationDate>2017/06/08</creationDate>
     <copyright>KnowledgeArc Ltd</copyright>
@@ -8,7 +8,7 @@
     <authorEmail>development@knowledgearc.com</authorEmail>
     <authorUrl>www.knowledgearc.org</authorUrl>
     <version>1.0.0-beta</version>
-    <description>PLG_INGEST_ARTICLE_XML_DESCRIPTION</description>
+    <description>PLG_SYSTEM_ARTICLE_XML_DESCRIPTION</description>
 
     <files>
         <filename plugin="article">article.php</filename>
@@ -48,8 +48,8 @@
                 <field
                     name="user_id"
                     type="user"
-                    label="PLG_INGEST_ARTICLE_FIELD_USERID_LABEL"
-                    description="PLG_INGEST_ARTICLE_FIELD_USERID_DESC"
+                    label="PLG_SYSTEM_ARTICLE_FIELD_USERID_LABEL"
+                    description="PLG_SYSTEM_ARTICLE_FIELD_USERID_DESC"
                     size="45"/>
 
                 <field
@@ -57,8 +57,8 @@
                     type="radio"
                     class="btn-group btn-group-yesno"
                     default="1"
-                    label="PLG_INGEST_ARTICLE_AUTOCREATE_FIELDS_LABEL"
-                    description="PLG_INGEST_ARTICLE_AUTOCREATE_FIELDS_DESC">
+                    label="PLG_SYSTEM_ARTICLE_AUTOCREATE_FIELDS_LABEL"
+                    description="PLG_SYSTEM_ARTICLE_AUTOCREATE_FIELDS_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
@@ -67,8 +67,8 @@
                     name="autocreate_field_group_id"
                     type="fieldgroups"
                     context="com_content.article"
-                    label="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_GROUP_ID_LABEL"
-                    description="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_GROUP_ID_DESC"
+                    label="PLG_SYSTEM_ARTICLE_AUTOCREATE_FIELD_GROUP_ID_LABEL"
+                    description="PLG_SYSTEM_ARTICLE_AUTOCREATE_FIELD_GROUP_ID_DESC"
                     showon="autocreate_fields:1">
                     <option value="0">JNONE</option>
                 </field>
@@ -76,9 +76,9 @@
                 <field
                     name="autocreate_field_cat_ids"
                     type="category"
-                    label="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_CAT_IDS_LABEL"
+                    label="PLG_SYSTEM_ARTICLE_AUTOCREATE_FIELD_CAT_IDS_LABEL"
                     extension="com_content"
-                    description="PLG_INGEST_ARTICLE_AUTOCREATE_FIELD_CAT_IDS_DESC"
+                    description="PLG_SYSTEM_ARTICLE_AUTOCREATE_FIELD_CAT_IDS_DESC"
                     multiple="true"
                     showon="autocreate_fields:1">
                     <option value="">JALL</option>

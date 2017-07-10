@@ -235,6 +235,7 @@ class JHarvestModelHarvest extends JModelAdmin
         $app = JFactory::getApplication();
         $dispatcher = JEventDispatcher::getInstance();
 
+        JPluginHelper::importPlugin('system');
         JPluginHelper::importPlugin('harvest');
         JPluginHelper::importPlugin('ingest');
 
