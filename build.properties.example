@@ -1,6 +1,6 @@
 id=jharvest
 src=.
 path.joomla=/var/www/html/
-package.extensions=com_jharvest.zip,plg_content_assets.zip,plg_fields_metadata.zip,plg_harvest_oai.zip,plg_ingest_article.zip,plg_ingest_dspace.zip
+package.extensions=com_jharvest.zip,plg_content_assets.zip,plg_fields_metadata.zip,plg_harvest_oai.zip,plg_ingest_article.zip,plg_ingest_dspace.zip,plg_system_article.zip
 package.version=x.x.x
 package.date=YYYY-MM-DD
