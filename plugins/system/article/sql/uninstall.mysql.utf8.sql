@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS `#__ingest_articles`;
+DROP TABLE IF EXISTS `#__ingested_articles`;

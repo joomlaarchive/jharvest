@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 /**
- * IngestArticle Table class.
+ * IngestedArticle Table class.
  */
 class ContentTableIngestArticle extends JTable
 {
@@ -20,7 +20,7 @@ class ContentTableIngestArticle extends JTable
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__ingest_articles', 'content_id', $db);
+        parent::__construct('#__ingested_articles', 'content_id', $db);
     }
 
     /**
@@ -41,7 +41,7 @@ class ContentTableIngestArticle extends JTable
         }
 
         // Verify that the title is unique
-        $table = JTable::getInstance('IngestArticle', 'ContentTable');
+        $table = JTable::getInstance('IngestedArticle', 'ContentTable');
 
         if ($table->load(array('title'=>$this->title)) && ($table->id != $this->id || $this->id == 0)) {
             $this->setError(JText::_('PLG_SYSTEM_ARTICLE_ERROR_UNIQUE_TITLE'));

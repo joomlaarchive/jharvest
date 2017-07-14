@@ -36,8 +36,8 @@
     </update>
 
     <languages>
-        <language tag="en-GB">language/en-GB/en-GB.plg_ingest_article.ini</language>
-        <language tag="en-GB">language/en-GB/en-GB.plg_ingest_article.sys.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_article.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_article.sys.ini</language>
     </languages>
 
     <config>

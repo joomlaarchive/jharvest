@@ -22,7 +22,6 @@ class PlgSystemArticle extends JPlugin
 
     public function onJHarvestIngest($items, $params)
     {
-    jexit();
         $this->params->merge($params);
 
         if (!$this->params->get('user_id')) {
@@ -119,7 +118,7 @@ class PlgSystemArticle extends JPlugin
 
             if ($article->save($data)) {
                 JTable::addIncludePath(__DIR__."/tables");
-                $ingestedArticle = JTable::getInstance("IngestArticle", "ContentTable");
+                $ingestedArticle = JTable::getInstance("IngestedArticle", "ContentTable");
 
                 $ingestedArticle->bind(
                     [
@@ -227,7 +226,7 @@ class PlgSystemArticle extends JPlugin
 
         try {
             JTable::addIncludePath(__DIR__."/tables");
-            $table = JTable::getInstance('IngestArticle', 'ContentTable');
+            $table = JTable::getInstance('IngestedArticle', 'ContentTable');
 
             if (!$table->delete((int)$item->id)) {
                 throw new Exception($table->getError());
