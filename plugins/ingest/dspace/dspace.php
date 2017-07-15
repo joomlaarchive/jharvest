@@ -113,6 +113,36 @@ class PlgIngestDSpace extends JPlugin
             $i+=count($items);
         }
     }
+    
+    /**
+     * Add the assets form field to the dspace form.
+     *
+     * @param   JForm  $form
+     * @param   array  $data
+     *
+     * @return  bool   True if the additional form fields are loaded correctly,
+     * false otherwise.
+     */
+    public function onContentPrepareForm($form, $data)
+    {
+        if (!($form instanceof JForm)) {
+            $this->_subject->setError('JERROR_NOT_A_FORM');
+
+            return false;
+        }
+
+        // Check we are manipulating a valid form.
+        $name = $form->getName();
+
+        if (!in_array($name, ['com_jharvest.harvest'])) {
+            return true;
+        }
+
+        JForm::addFormPath(__DIR__.'/forms');
+        $form->loadFile('params', false);
+
+        return true;
+    }
 
     /**
      * Build a DSpace-compatible package.

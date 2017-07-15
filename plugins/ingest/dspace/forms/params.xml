@@ -3,7 +3,7 @@
     <fields name="params">
         <fields name="ingest">
             <fields name="dspace">
-                <fieldset name="ingest">
+                <fieldset name="dspace_ingest" label="PLG_INGEST_DSPACE_FIELDSET_LABEL">
                     <field
                         name="collection"
                         type="text"

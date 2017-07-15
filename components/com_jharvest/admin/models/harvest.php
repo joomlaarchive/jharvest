@@ -76,7 +76,7 @@ class JHarvestModelHarvest extends JModelAdmin
         return $data;
     }
 
-    protected function preprocessForm(\JForm $form, $data, $group = 'content')
+    protected function preprocessForm(\JForm $form, $data, $group = 'ingest')
     {
         // if no data, grab the posted form data.
         if (!$data instanceof JObject) {
