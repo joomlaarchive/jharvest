@@ -200,51 +200,68 @@ class PlgHarvestOai extends JPlugin
         $params = new \Joomla\Registry\Registry($harvest->params);
 
         if (isset($data->header->identifier)) {
-            $context = 'joaipmh.'.$params->get('discovery.plugin.format.metadata');
+            if (isset($data->header["status"])) {
+                switch ($data->header["status"]) {
+                    case "deleted":
+                        $state = -2; // DELETED
 
-            $dispatcher = JEventDispatcher::getInstance();
-            JPluginHelper::importPlugin("joaipmh");
-
-            $array = $dispatcher->trigger('onJOaiPmhHarvestMetadata', [$context, $data->metadata]);
-
-            $cache = array("metadata"=>JArrayHelper::getValue($array, 0));
-
-            // probe for assets (if an ORE plugin is enabled)
-            $metadataPrefix = $params->get('discovery.plugin.format.assets');
-
-            if ($metadataPrefix) {
-                $queries = array(
-                    'verb'=>'GetRecord',
-                    'identifier'=>(string)$data->header->identifier,
-                    'metadataPrefix'=>$metadataPrefix);
-
-                $url = new JUri($params->get('discovery.url'));
-                $url->setQuery($queries);
-
-                $http = JHttpFactory::getHttp();
-                $response = $http->get($url);
-
-                if ((int)$response->code == 200) {
-                    $context = 'joaiore.'.$metadataPrefix;
-
-                    $node = simplexml_load_string($response->body);
-
-                    JPluginHelper::importPlugin("joaiore");
-
-                    $array = $dispatcher->trigger('onJOaiOreHarvestAssets', array($context, $node));
-
-                    $cache["assets"] = JArrayHelper::getValue($array, 0, array());
-                } else if ((int)$response->code == 404) {
-                    JLog::add("No valid ORE endpoint found. Continuing without files...");
-                } else {
-                    throw new Exception ((string)$response, (int)$response->code);
+                        break;
                 }
-            }
+            } else {
+                $context = 'joaipmh.'.$params->get('discovery.plugin.format.metadata');
 
+                $dispatcher = JEventDispatcher::getInstance();
+                JPluginHelper::importPlugin("joaipmh");
+
+                $array = $dispatcher->trigger('onJOaiPmhHarvestMetadata', [$context, $data->metadata]);
+
+                $cache = array("metadata"=>JArrayHelper::getValue($array, 0));
+
+                // probe for assets (if an ORE plugin is enabled)
+                $metadataPrefix = $params->get('discovery.plugin.format.assets');
+
+                if ($metadataPrefix) {
+                    $queries = array(
+                        'verb'=>'GetRecord',
+                        'identifier'=>(string)$data->header->identifier,
+                        'metadataPrefix'=>$metadataPrefix);
+
+                    $url = new JUri($params->get('discovery.url'));
+                    $url->setQuery($queries);
+
+                    $http = JHttpFactory::getHttp();
+                    $response = $http->get($url);
+
+                    if ((int)$response->code == 200) {
+                        $context = 'joaiore.'.$metadataPrefix;
+
+                        $node = simplexml_load_string($response->body);
+
+                        JPluginHelper::importPlugin("joaiore");
+
+                        $array = $dispatcher->trigger('onJOaiOreHarvestAssets', array($context, $node));
+
+                        $cache["assets"] = JArrayHelper::getValue($array, 0, array());
+                    } else if ((int)$response->code == 404) {
+                        JLog::add("No valid ORE endpoint found. Continuing without files...");
+                    } else {
+                        throw new Exception ((string)$response, (int)$response->code);
+                    }
+                }
+                
+                $state = 0; // HARVESTED
+            }
+            
+            // @TODO move this back into component, maybe as Helper::cache($data);
             $table = JTable::getInstance('Cache', 'JHarvestTable');
             $table->set('id', (string)$data->header->identifier);
-            $table->set('data', json_encode($cache));
+            
+            if (isset($cache)) {
+                $table->set('data', json_encode($cache));
+            }
+            
             $table->set('harvest_id', (int)$harvest->id);
+            $table->set('state', $state);
             $table->store();
         }
     }

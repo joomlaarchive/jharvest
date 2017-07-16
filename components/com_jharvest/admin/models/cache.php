@@ -28,15 +28,18 @@ class JHarvestModelCache extends \JModelList
 
         $query = $db->getQuery(true);
 
-        $select = $db->qn(['a.id', 'a.harvest_id', 'a.data']);
+        $select = $db->qn(['a.id', 'a.harvest_id', 'a.data', 'a.state']);
 
         $query
             ->select($select)
             ->from($db->qn('#__jharvest_cache', 'a'));
 
         if ($harvestId = $this->getState('filter.harvest_id')) {
-            $query
-                ->where($db->qn('a.harvest_id').'='.$harvestId);
+            $query->where($db->qn('a.harvest_id').'='.$harvestId);
+        }
+
+        if (is_numeric($state = $this->getState('filter.state'))) {
+            $query->where($db->qn('a.state').' = '.$state);
         }
 
         return $query;
@@ -48,19 +51,5 @@ class JHarvestModelCache extends \JModelList
         $id .= ':' . $this->getState('filter.harvest_id');
 
         return parent::getStoreId($id);
-    }
-
-    /**
-     *
-     */
-    public function save($data)
-    {
-        if (is_array($data)) {
-            foreach ($data->items as $item) {
-
-            }
-        } else {
-
-        }
     }
 }

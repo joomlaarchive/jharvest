@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `#__jharvest_harvests` (
 CREATE TABLE IF NOT EXISTS `#__jharvest_cache` (
     `id` VARCHAR(255),
     `data` TEXT NULL,
+    `state` INT 0,
     `harvest_id` INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY(`id`, `harvest_id`),
     KEY `idx_jharvest_cache_harvest_id` (`harvest_id`)

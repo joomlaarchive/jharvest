@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 /**
  * IngestedArticle Table class.
  */
-class ContentTableIngestArticle extends JTable
+class ContentTableIngestedArticle extends JTable
 {
     /**
      * Constructor

@@ -215,7 +215,9 @@ class JHarvestModelHarvest extends JModelAdmin
         foreach ($pks as $pk) {
             if ($table->load($pk)) {
                 $table->harvested = '0000-00-00 00:00:00';
-                $table->store();
+                if ($table->store()) {
+                    JHarvestHelper::clearCache($table->harvest_id);
+                }
 
                 $count++;
             } else {
@@ -255,7 +257,8 @@ class JHarvestModelHarvest extends JModelAdmin
         $cache->setState("list.limit", $limit);
 
         $cache->setState("filter.harvest_id", $data->id);
-
+        $cache->setState("filter.state", 0);
+        
         $total = $cache->getTotal();
 
         $start = 0;
@@ -264,8 +267,17 @@ class JHarvestModelHarvest extends JModelAdmin
             $cache->setState("list.start", $start);
             $items = $cache->getItems();
 
-            // batch process cache items.
-            $dispatcher->trigger('onJHarvestIngest', [$items, $params]);
+            foreach ($items as $item) {
+                // process a cached item.
+                $dispatcher->trigger('onJHarvestItemIngest', [$item, $params]);
+            
+                $table = \JTable::getInstance('Cache', 'JHarvestTable');
+                
+                $table->bind(\Joomla\Utilities\ArrayHelper::fromObject($item));
+                $table->state = 1;
+                
+                $table->store();
+            }
 
             $start = (int)$cache->getState("list.start") + (int)$limit;
         }

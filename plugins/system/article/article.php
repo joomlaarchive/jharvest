@@ -20,7 +20,7 @@ class PlgSystemArticle extends JPlugin
 {
     protected $autoloadLanguage = true;
 
-    public function onJHarvestIngest($items, $params)
+    public function onJHarvestItemIngest($item, $params)
     {
         $this->params->merge($params);
 
@@ -41,98 +41,96 @@ class PlgSystemArticle extends JPlugin
 
         $languages = \JLanguageHelper::getContentLanguages();
 
-        foreach ($items as $item) {
-            $itemData = json_decode($item->data);
+        $itemData = json_decode($item->data);
 
-            $metadata = $itemData->metadata;
-            $assets = $itemData->assets;
+        $metadata = $itemData->metadata;
+        $assets = $itemData->assets;
 
-            $article = JModelLegacy::getInstance("Article", "ContentModel", ["ignore_request"=>true]);
+        $article = JModelLegacy::getInstance("Article", "ContentModel", ["ignore_request"=>true]);
 
-            $data = [];
+        $data = [];
 
-            if (isset($metadata->title) && !is_null($metadata->title)) {
-                $data["title"] = array_shift($metadata->title);
-            } else {
-                $data["title"] = JText::_("PLG_SYSTEM_ARTICLE_UNDEFINED");
-            }
+        if (isset($metadata->title) && !is_null($metadata->title)) {
+            $data["title"] = array_shift($metadata->title);
+        } else {
+            $data["title"] = JText::_("PLG_SYSTEM_ARTICLE_UNDEFINED");
+        }
 
-            if (isset($metadata->description) && !is_null($metadata->description)) {
-                $data["description"] = array_shift($metadata->description);
-            }
+        if (isset($metadata->description) && !is_null($metadata->description)) {
+            $data["description"] = array_shift($metadata->description);
+        }
 
-            if (isset($metadata->language) && !is_null($metadata->language)) {
-                $found = false;
-                $language = array_shift($metadata->language);
+        if (isset($metadata->language) && !is_null($metadata->language)) {
+            $found = false;
+            $language = array_shift($metadata->language);
 
-                reset($languages);
+            reset($languages);
 
-                while (!$found && $lang = current($languages)) {
-                    $code = $lang->lang_code;
+            while (!$found && $lang = current($languages)) {
+                $code = $lang->lang_code;
 
-                    $match = ($code == $language);
-                    $nearMatch = (strlen($language) == 2 && strpos($code, $language) === 0);
+                $match = ($code == $language);
+                $nearMatch = (strlen($language) == 2 && strpos($code, $language) === 0);
 
-                    if ($match || $nearMatch) {
-                        $found = $lang->lang_code;
-                    }
-
-                    next($languages);
+                if ($match || $nearMatch) {
+                    $found = $lang->lang_code;
                 }
 
-                if ($found) {
-                    $data["language"] = $found;
-                } else {
-                    $data["language"] = "*";
-                }
+                next($languages);
+            }
+
+            if ($found) {
+                $data["language"] = $found;
             } else {
                 $data["language"] = "*";
             }
+        } else {
+            $data["language"] = "*";
+        }
 
-            $data["catid"] = $this->params->get('ingest.article.catid');
-            $data["alias"] = null;
+        $data["catid"] = $this->params->get('ingest.article.catid');
+        $data["alias"] = null;
 
-            foreach (ArrayHelper::fromObject($metadata) as $key=>$value) {
-                $i = 0;
+        foreach (ArrayHelper::fromObject($metadata) as $key=>$value) {
+            $i = 0;
 
-                $this->createField($key);
+            $this->createField($key);
 
-                foreach ($value as $v) {
-                    $data["com_fields"][$key]["$key".$i] = $v;
-                    $i++;
-                }
+            foreach ($value as $v) {
+                $data["com_fields"][$key]["$key".$i] = $v;
+                $i++;
             }
+        }
 
-            $data["plg_content_assets"] = ["asset"];
+        $data["plg_content_assets"] = ["asset"];
 
-            foreach ($assets as $asset) {
-                $asset->link = $asset->url;
-                unset($asset->url);
+        foreach ($assets as $asset) {
+            $asset->link = $asset->url;
+            unset($asset->url);
 
-                $data["plg_content_assets"]["asset"][] = ArrayHelper::fromObject($asset);
-            }
+            $data["plg_content_assets"]["asset"][] = ArrayHelper::fromObject($asset);
+        }
 
-            // trick com_content into generating new aliases and handling duplicate
-            // titles.
-            JFactory::getApplication()->input->set("task", "save");
+        // trick com_content into generating new aliases and handling duplicate
+        // titles.
+        JFactory::getApplication()->input->set("task", "save");
 
-            if ($article->save($data)) {
-                JTable::addIncludePath(__DIR__."/tables");
-                $ingestedArticle = JTable::getInstance("IngestedArticle", "ContentTable");
+        if ($article->save($data)) {
+            JTable::addIncludePath(__DIR__."/tables");
+            $ingestedArticle = JTable::getInstance("IngestedArticle", "ContentTable");
 
-                $ingestedArticle->bind(
-                    [
-                        "content_id"=>$article->getItem()->id,
-                        "item_id"=>$item->id
-                    ]
-                );
+            $ingestedArticle->bind(
+                [
+                    "content_id"=>$article->getItem()->id,
+                    "item_id"=>$item->id
+                ]
+            );
 
-                if ($ingestedArticle->store()) {
-                    $this->_subject->setError($article->getError());
-                }
-            } else {
+            if ($ingestedArticle->store()) {
                 $this->_subject->setError($article->getError());
             }
+        } else {
+            $this->_subject->setError($article->getError());
         }
     }
 

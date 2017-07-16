@@ -25,10 +25,21 @@ class JHarvestHelper extends JHelperContent
         return $options;
     }
 
-    public static function clearCache()
+    public static function clearCache($harvestId = 0)
     {
         $db = JFactory::getDbo();
-        $db->truncateTable("#__jharvest_cache");
+        
+        if ($harvestId) {
+            $query = $db->getQuery(true);
+            $query
+                ->delete('#__jharevest_cache')
+                ->where("harvest_id=".(int)$harvestId);
+                
+            $db->setQuery($query);
+            $db->execute();
+        } else {
+            $db->truncateTable("#__jharvest_cache");
+        }
     }
 
     public static function log($msg, $type = JLog::ERROR)
