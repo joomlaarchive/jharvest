@@ -126,8 +126,8 @@ class PlgSystemArticle extends JPlugin
                 ]
             );
 
-            if ($ingestedArticle->store()) {
-                $this->_subject->setError($article->getError());
+            if (!$ingestedArticle->store()) {
+                $this->_subject->setError($ingestedArticle->getError());
             }
         } else {
             $this->_subject->setError($article->getError());

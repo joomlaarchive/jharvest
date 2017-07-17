@@ -21,6 +21,7 @@ class ContentTableIngestedArticle extends JTable
     public function __construct(&$db)
     {
         parent::__construct('#__ingested_articles', 'content_id', $db);
+        $this->_autoincrement = false;
     }
 
     /**
