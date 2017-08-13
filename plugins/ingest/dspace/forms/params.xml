@@ -3,12 +3,18 @@
     <fields name="params">
         <fields name="ingest">
             <fields name="dspace">
-                <fieldset name="dspace_ingest" label="PLG_INGEST_DSPACE_FIELDSET_LABEL">
+                <fieldset 
+                    name="dspace_ingest" 
+                    label="PLG_INGEST_DSPACE_FIELDSET_LABEL"
+                    addfieldpath="plugins/ingest/dspace/fields">
                     <field
                         name="collection"
-                        type="text"
+                        type="ingestdspace.collections"
                         label="PLG_INGEST_DSPACE_COLLECTION_LABEL"
-                        description="PLG_INGEST_DSPACE_COLLECTION_DESC"/>
+                        description="PLG_INGEST_DSPACE_COLLECTION_DESC"
+                        required="true">
+                        <option>JSELECT</option>
+                    </field>
                 </fieldset>
             </fields>
         </fields>

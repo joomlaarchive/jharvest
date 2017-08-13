@@ -13,7 +13,7 @@
     <files>
         <filename plugin="dspace">dspace.php</filename>
         <folder>forms</folder>
-        <folder>sql</folder>
+        <folder>fields</folder>
     </files>
 
     <install>
