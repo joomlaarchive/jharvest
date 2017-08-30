@@ -23,14 +23,14 @@ class IngestDSpaceFormFieldCollections extends \JFormFieldList
     protected $type = 'IngestDSpace.Collections';
 
     /**
-     * Uses the configured DSpace Collections API endpoint to retrieve a list 
+     * Uses the configured DSpace Collections API endpoint to retrieve a list
      * of DSpace collections.
      */
     protected function getOptions()
     {
         // Initialize variables.
         $options = parent::getOptions();
-        
+
         $http = JHttpFactory::getHttp();
 
         $plugin = JPluginHelper::getPlugin("ingest", "dspace");
@@ -39,19 +39,23 @@ class IngestDSpaceFormFieldCollections extends \JFormFieldList
         $headers = array(
             'user'=>$params->get('username'),
             'pass'=>$params->get('password'));
-        
+
         $url = new JUri($params->get('rest_url').'/collections.json');
-        
-        $response = $http->get((string)$url, $headers);
 
-        if ($response->code === 200) {
-            $data = json_decode($response->body);
+        try {
+            $response = $http->get((string)$url, $headers);
 
-            foreach ($data->collections as $collection) {
-                $options[$collection->id] = $collection->name;
+            if ($response->code === 200) {
+                $data = json_decode($response->body);
+
+                foreach ($data->collections as $collection) {
+                    $options[$collection->id] = $collection->name;
+                }
             }
+        } catch (Exception $e) {
+            JLog::add($e->getMessage(), JLog::ERROR, 'jerror');
         }
-        
+
         return $options;
     }
 }
