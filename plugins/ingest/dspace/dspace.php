@@ -30,7 +30,7 @@ class PlgIngestDSpace extends JPlugin
         $this->params->merge($params);
 
         $data = json_decode($item->data);
-        
+
         $metadata = $data->metadata;
         $assets = $data->assets;
 
@@ -52,15 +52,15 @@ class PlgIngestDSpace extends JPlugin
         $url = new JUri($this->params->get('rest_url').'/items.stream');
         $response = $http->post($url, $post, $headers);
 
-        if ($response->code == '201') {        
+        if ($response->code == '201') {
             fwrite(STDOUT, "item created: ".(string)$response->body."\n");
         } else {
             fwrite(STDOUT, print_r($response, true)."\n");
         }
 
-        //JFile::delete($path);
+        JFile::delete($path);
     }
-    
+
     /**
      * Add the assets form field to the dspace form.
      *
@@ -115,12 +115,12 @@ class PlgIngestDSpace extends JPlugin
 
         $registry = new \Joomla\Registry\Registry;
         $registry->loadFile(__DIR__."/crosswalk.json", "JSON");
-        
+
         $i = 0;
         foreach ($metadata as $key=>$field) {
             foreach ($field as $value) {
                 $element = $request->metadata->addChild("field");
-                
+
                 $element->name = $registry->get($key);
                 $element->value = $value;
                 $i++;
@@ -132,7 +132,15 @@ class PlgIngestDSpace extends JPlugin
         $bundle->addChild("name", "ORIGINAL");
         $bitstreams = $bundle->addChild("bitstreams");
 
-        $files = array();
+        if (!class_exists('ZipArchive')) {
+            throw new Exception('Zip library not installed.');
+        }
+
+        $package = new ZipArchive;
+
+        if ($package->open($zip, ZipArchive::CREATE) === false) {
+            throw new Exception('Cannot open zip file '.$zip);
+        }
 
         foreach ($assets as $asset) {
             $bitstream = $bitstreams->addChild("bitstream");
@@ -146,21 +154,14 @@ class PlgIngestDSpace extends JPlugin
 
             $this->download($src, $dest);
 
-            $handle = fopen($dest, "r");
-
-            $files[] = array(
-                "name"=>$asset->name,
-                "data"=>fread($handle, $asset->size));
-
-            fclose($handle);
+            $package->addFile($dest, $asset->name);
         }
 
-        $files[] = array('name'=>'package.xml', 'data'=>$request->saveXML());
+        $package->addFromString('package.xml', $request->saveXML());
 
-        $package = JArchive::getAdapter('zip');
-        $package->create($zip, $files);
+        $package->close();
 
-        //JFolder::delete($path);
+        JFolder::delete($path);
 
         return $zip;
     }
@@ -174,7 +175,7 @@ class PlgIngestDSpace extends JPlugin
     private function download($src, $dest)
     {
         $fp = fopen($dest, 'w+');
-    
+
         //@TODO preferred method when joomla curl transport can handle bool(true).
         //$http = JHttpFactory::getHttp(null, 'curl');
         //$http->setOption("transport.curl", [CURLOPT_FILE=>$fp]);
@@ -185,7 +186,7 @@ class PlgIngestDSpace extends JPlugin
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $src);
-        curl_setopt($ch, CURLOPT_FILE, $fp);  
+        curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPGET, true);
 

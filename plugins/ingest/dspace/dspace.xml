@@ -43,17 +43,26 @@
         <fields name="params">
             <fieldset name="basic">
                 <field
+                    name="rest_version"
+                    type="text"
+                    label="PLG_INGEST_DSPACE_FIELD_REST_VERSION_LABEL"
+                    description="PLG_INGEST_DSPACE_FIELD_REST_VERSION_DESC"
+                    size="45"/>
+
+                <field
                     name="rest_url"
                     type="text"
                     label="PLG_INGEST_DSPACE_FIELD_URL_LABEL"
                     description="PLG_INGEST_DSPACE_FIELD_URL_DESC"
                     size="45"/>
+
                 <field
                     name="username"
                     type="text"
                     label="PLG_INGEST_DSPACE_FIELD_USERNAME_LABEL"
                     description="PLG_INGEST_DSPACE_FIELD_USERNAME_DESC"
                     size="45"/>
+
                 <field
                     name="password"
                     type="text"
